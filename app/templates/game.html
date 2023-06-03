@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Добавление игры</h1>
+<form enctype="multipart/form-data" action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.gamename.label }}<br>
+    {{ form.gamename(size=32) }}<br>
+  </p>
+  <p>
+    {{ form.picture.label }}<br>
+    {{ form.picture }}<br>
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

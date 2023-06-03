@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Регистрация пользователя</h1>
+<form enctype="multipart/form-data" action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.username.label }}<br>
+    {{ form.username(size=32) }}<br>
+    {% for error in form.username.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.password.label }}<br>
+    {{ form.password(size=32) }}<br>
+    {% for error in form.password.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.password2.label }}<br>
+    {{ form.password2(size=32) }}<br>
+    {% for error in form.password2.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.email.label }}<br>
+    {{ form.email(size=64) }}<br>
+    {% for error in form.email.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.birthdate.label }}<br>
+    {{ form.birthdate }}<br>
+    {% for error in form.birthdate.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.sex.label }}<br>
+    {{ form.sex }}<br>
+
+  </p>
+  <p>
+    {{ form.country.label }}<br>
+    {{ form.country(size=32) }}<br>
+    {% for error in form.country.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.avatar.label }}<br>
+    {{ form.avatar }}<br>
+
+  </p>
+  <p>
+    {{ form.policy.label }}<br>
+    {{ form.policy }}<br>
+
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

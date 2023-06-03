@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Регистрация пользователя</h1>
+<form enctype="multipart/form-data" action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.gamename.label }}<br>
+    {{ form.gamename }}<br>
+  </p>
+  <p>
+    {{ form.materialname.label }}<br>
+    {{ form.materialname }}<br>
+  </p>
+  <p>
+    {{ form.materialtext.label }}<br>
+    {{ form.materialtext }}<br>
+  </p>
+  <p>
+    {{ form.image.label }}<br>
+    {{ form.image }}<br>
+  </p>
+  <p>
+    {{ form.language.label }}<br>
+    {{ form.language }}<br>
+  </p>
+  <p>
+    {{ form.mainlink.label }}<br>
+    {{ form.mainlink }}<br>
+  </p>
+  <p>
+    {{ form.maintext.label }}<br>
+    {{ form.maintext }}<br>
+  </p>
+  <p>
+    {{ form.sublink.label }}<br>
+    {{ form.sublink }}<br>
+  </p>
+  <p>
+    {{ form.subtext.label }}<br>
+    {{ form.subtext }}<br>
+  </p>
+  <p>
+    {{ form.tubelink.label }}<br>
+    {{ form.tubelink }}<br>
+  </p>
+  <p>
+    {{ form.tags.label }}<br>
+    {{ form.tags }}<br>
+  </p>
+  <p>
+    {{ form.adddate.label }}<br>
+    {{ form.adddate }}<br>
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}
