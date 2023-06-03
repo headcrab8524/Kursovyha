@@ -14,6 +14,7 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from flask import url_for
 from flask_login import login_required
+from flask_paginate import *
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -46,7 +47,7 @@ def addgroup(username, group_id):
 def game():
     form = MakeGameForm()
     if form.validate_on_submit():
-        game = Game(name=form.gamename.date, Picture=form.picture.data.read())
+        game = Game(name=form.gamename.data, Picture=form.picture.data.read())
         db.session.add(game)
         db.session.commit()
         return redirect(url_for('index'))
@@ -63,6 +64,12 @@ def user(username):
 def profile_photo(id):
     user = User.query.get(id)
     return user.Ava
+
+
+@app.route('/game_photo/<id>')
+def game_photo(id):
+    game = Game.query.get(id)
+    return game.Picture
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -109,6 +116,13 @@ def makenewmod():
         return redirect(url_for('index'))
     return render_template('makenewmod.html', title='Создание мода', form=form)
 
+
 @app.route('/gamelist')
 def gamelist():
-    return render_template("gamelist.html", title="Список игр")
+    page = request.args.get('page', type=int, default=1)
+    games = Game.query.paginate(page=page, per_page=10, error_out=False)
+    return render_template("gamelist.html", games=games, title="Список игр")
+
+@app.route('/faq')
+def faq():
+    return render_template("faq.html", title="FAQ")
