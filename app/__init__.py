@@ -4,10 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from sqlalchemy import MetaData
+from flask_ckeditor import CKEditor
 
 app = Flask(__name__)
 login = LoginManager(app)
 app.config.from_object(Config)
+ckeditor = CKEditor(app)
+
+def create_app():
+    app = Flask(__name__)
+    ckeditor.init_app(app)
+    return app
 convention = {
     "ix": 'ix_%(column_0_label)s',
     "uq": "uq_%(table_name)s_%(column_0_name)s",

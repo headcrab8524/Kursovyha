@@ -23,6 +23,7 @@
     {{ form.language.label }}<br>
     {{ form.language }}<br>
   </p>
+
   <p>
     {{ form.mainlink.label }}<br>
     {{ form.mainlink }}<br>
@@ -53,4 +54,6 @@
   </p>
   <p>{{ form.submit() }}</p>
 </form>
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='body')}}
 {% endblock %}

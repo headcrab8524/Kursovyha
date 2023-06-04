@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
-
+from flask_ckeditor import CKEditorField
 
 class RegistrationForm(FlaskForm):
     username = StringField('Логин/Nickname*', validators=[DataRequired()])
@@ -43,7 +43,7 @@ class MakeGameForm(FlaskForm):
 class MakeNewModForm(FlaskForm):
     gamename = SelectField('Выберите игру:*', choices=['Игра1', 'Игра2'], validators=[DataRequired()])
     materialname = StringField('Введите название материала:*', validators=[DataRequired()])
-    materialtext = StringField('Введите описание вашего материала:*', validators=[DataRequired()]) #ДОБАВИТЬ ОГРОМНОЕ ГОВНО КАК НИБУДЬ
+    materialtext = CKEditorField('Введите описание вашего материала:*', validators=[DataRequired()])
     image = FileField('Изображение (максимальный размер 300 Кб)')
     language = SelectField('Язык локализации мода:*', choices=['Мультиязычный', 'Русский', 'Английский', 'Испанский', 'Итальянский', 'Немецкий', 'Французский', 'Японский', 'Китайский', 'Иврит'], validators=[DataRequired()])
     mainlink = StringField('Основной архив мода №1 (ссылка):', validators=[DataRequired()])
