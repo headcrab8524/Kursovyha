@@ -120,7 +120,7 @@ def makenewmod():
 @app.route('/gamelist')
 def gamelist():
     page = request.args.get('page', type=int, default=1)
-    games = Game.query.paginate(page=page, per_page=10, error_out=False)
+    games = Game.query.paginate(page=page, per_page=1, error_out=False)
     return render_template("gamelist.html", games=games, title="Список игр")
 
 @app.route('/faq')
