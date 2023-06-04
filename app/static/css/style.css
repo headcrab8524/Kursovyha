@@ -36,6 +36,9 @@ img{
     width: 70%;
     height: 70%;
 }
+div{
+    font-family: 'Font Name';
+}
 #flex{
     display: flex;
     justify-content: center;
