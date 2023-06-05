@@ -1,132 +1,168 @@
 <!DOCTYPE html>
-<html style="height: 100%;" xmlns="http://www.w3.org/1999/html">
+<html lang="ru">
+
 <head>
-    {% if title %}
-    <title>{{ title }}</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    {% else %}
-    <title>Welcome to SpyMods</title>
-    {% endif %}
+    <link rel="icon" href="/static/img/logo.svg">
+    <title>
+        {% block title %}
+        Welcome to SpyMods
+        {% endblock %}
+    </title>
 </head>
-<header id="header" class="fixed-top">
-    <nav class="navbar navbar-expanded-lg navbar-dark" style="background-color: #060606;">
+
+<body class="text-white">
+    <header class="fixed-top p-3 bg-dark text-white">
         <div class="container">
-                <a class="brand-button navbar-brand" style="text-decoration: none;" href="/index">
-                <div style="display: flex; flex-direction: row;">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect y="19.799" width="28" height="28" transform="rotate(-45 0 19.799)" fill="#1EE40D"/>
-                        <rect x="5" y="20.0711" width="10" height="10" transform="rotate(-45 5 20.0711)" fill="white"/>
-                        <rect x="21" y="20.0711" width="10" height="10" transform="rotate(-45 21 20.0711)" fill="white"/>
-                        </svg>
-                    <h6 style="margin-top: 15px;">SpyMod</h6>
-                </div>
-                </a> 
-                <a href="/gamelist" class="header-link">Игры</a>
-                <a href="/faq" class="header-link">Faq</a>
-                <form action="#" class="d-flex">
-                        <input type="search" placeholder="Поиск" class="form-control mr-2"></input>
-                </form>
-            {% if current_user.is_active==false %}
-            <a class="autorize-button" href="/login" style="background-color:rgb(12, 12, 12) ;display: flex; text-decoration: none;  flex-direction: row; margin-right: 10px; margin-top: 15px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="White" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
-                    <p style="margin-left: 5px;">Авторизоваться</p>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="brand-button navbar-brand text-white">
+                    <div class="d-flex align-items-center">
+                        <img src="/static/img/logo.svg" alt="logo">
+                        <h6 class="m-0 mt-1 ms-3">SpyMod</h6>
+                    </div>
                 </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ url_for('gamelist') }}"
+                            class="nav-link text-white px-2 ms-lg-5 mb-2 mb-lg-0">Игры</a></li>
+                    <li><a href="{{ url_for('faq') }}" class="nav-link text-white px-2 ms-5 mb-2 mb-lg-0">FAQ</a></li>
+                </ul>
+
+                <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" class="form-control form-control-dark" placeholder="Поиск" aria-label="Search">
+                </form>
+
+                {% if current_user.is_authenticated %}
+                <div class="d-flex mb-2 mb-md-0">
+                    <div class="dropdown text-end">
+                        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                            id="user-header-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="rounded-circle" id="profile-img"
+                                style="background-image: url('{{ url_for('profile_photo', id=current_user.id) }}');">
+                            </div>
+                            <span class="ms-2">{{ current_user.username }}</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="user-header-dropdown">
+                            <li><a class="dropdown-item" href="#">Профиль</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action='{{ url_for(' logout') }}' id="logout-form">
+                                    <button type="submit" class="logout-link dropdown-item">Выйти</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-light me-2">Вход</button>
+                        <button type="button" class="btn btn-success">Регистрация</button>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% else %}
-        <div style="display:flex; flex-direction: row;">
-            <a class="autorize-button" href="{{ url_for('user', username=current_user.username) }}" style="background-color:rgb(12, 12, 12) ;display: flex; text-decoration: none;  flex-direction: row; margin-right: 10px; margin-top: 15px;">
-                <td> <img class="rounded-circle" src="{{url_for('profile_photo',id=current_user.id)}}" style=" margin-left: 40px; width: 40px; height:40px;"></td>
-                <div style="display: flex; flex-direction: column;">
-                <a class="usernamepandexit" href="{{ url_for('user', username=current_user.username) }}"  >{{ current_user.username }}</a>
-                    <a class="usernamepandexit" href="{{ url_for('logout') }}">Выйти</a>
-                </div>
-            </a>
-        </div>
-            {% endif %}
-        </div>
-    </nav>
+    </header>
 
-    <square class="line-square" style="background-color:#00bb2f; width: 100%; height: 5px; display: block;"></square>
-</header>
-{% if current_user.is_authenticated%}
-{% if current_user.IdGroup==1 or current_user.IdGroup==2 or current_user.IdGroup==3 %}
-<a class="fixed-top" title="Добавить модификцию" href="/makenewmod" style="margin-left: 40px; height:40px; width: 40px; margin-top: 100px;"><button style="font-family: 'Font Name'; color:  white; background-color: #00bb2f; height:40px; width: 40px;">+</button></a>
-{% endif %}
-{% if current_user.IdGroup==3 %}
-<a class="fixed-top" title="Добавить игру" href="/game" style="margin-left: 40px; height:40px; width: 40px; margin-top: 200px;"><button style="font-family: 'Font Name'; color:  white; background-color: #00bb2f; height:40px; width: 40px;">
-    <svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C1.34315 5 0 6.34315 0 8V16C0 17.6569 1.34314 19 3 19H21C22.6569 19 24 17.6569 24 16V8C24 6.34315 22.6569 5 21 5H3ZM2 8C2 7.44772 2.44772 7 3 7H21C21.5523 7 22 7.44771 22 8V16C22 16.5523 21.5523 17 21 17H3C2.44772 17 2 16.5523 2 16V8ZM8 10C8 9.44771 7.55228 9 7 9C6.44772 9 6 9.44771 6 10V11H5C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13H6V14C6 14.5523 6.44772 15 7 15C7.55228 15 8 14.5523 8 14V13H9C9.55228 13 10 12.5523 10 12C10 11.4477 9.55228 11 9 11H8V10ZM16 11.5C16 12.3284 15.3284 13 14.5 13C13.6716 13 13 12.3284 13 11.5C13 10.6716 13.6716 10 14.5 10C15.3284 10 16 10.6716 16 11.5ZM18.5 13C19.3284 13 20 12.3284 20 11.5C20 10.6716 19.3284 10 18.5 10C17.6716 10 17 10.6716 17 11.5C17 12.3284 17.6716 13 18.5 13Z" fill="#000000"></path> </g></svg>
-</button></a>
-{% endif %}
-{% endif %}
-<body>
-<header>
-    <nav class="navbar navbar-expanded-lg navbar-dark" style="background-color: rgb(12, 12, 12);">
+    <header class="fake-header p-3 bg-dark text-white position-relative">
         <div class="container">
-            <a class="brand-button navbar-brand" style="text-decoration: none;" href="/index">
-                <div style="display: flex; flex-direction: row;">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect y="19.799" width="28" height="28" transform="rotate(-45 0 19.799)" fill="#1EE40D"/>
-                        <rect x="5" y="20.0711" width="10" height="10" transform="rotate(-45 5 20.0711)" fill="white"/>
-                        <rect x="21" y="20.0711" width="10" height="10" transform="rotate(-45 21 20.0711)" fill="white"/>
-                    </svg>
-                    <h6 style="margin-top: 15px;">SpyMod</h6>
-                </div>
-            </a>
-            <a href="/gamelist" class="header-link">Игры</a>
-            <a href="" class="header-link">Faq</a>
-            <form action="#" class="d-flex">
-                <input type="search" placeholder="Поиск" class="form-control mr-2"></input>
-            </form>
-            {% if current_user.is_active==false %}
-            <a class="autorize-button" href="/login" style="background-color:rgb(12, 12, 12) ;display: flex; text-decoration: none;  flex-direction: row; margin-right: 10px; margin-top: 15px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="White" class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                </svg>
-                <p style="margin-left: 5px;">Авторизоваться</p>
-            </a>
-        </div>
-        {% else %}
-        <div style="display:flex; flex-direction: row;">
-            <a class="autorize-button" href="#" style="background-color:rgb(12, 12, 12) ;display: flex; text-decoration: none;  flex-direction: row; margin-right: 10px; margin-top: 15px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="White" class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                </svg>
-                <div style="display: flex; flex-direction: column;">
-                    <a class="usernamepandexit"  >{{ current_user.username }}</a>
-                    <a class="usernamepandexit" href="{{ url_for('logout') }}">Выйти</a>
-                </div>
-            </a>
-        </div>
-        {% endif %}
-        </div>
-    </nav>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="brand-button navbar-brand text-white">
+                    <div class="d-flex align-items-center">
+                        <img src="/static/img/logo.svg" alt="logo">
+                        <h6 class="m-0 ms-3">SpyMod</h6>
+                    </div>
+                </a>
 
-    <square class="line-square" style="background-color:#00bb2f; width: 100%; height: 5px; display: block;"></square>
-</header>
-<main>
-    <div class="AllContent" id="contenthome" style="display: flex; height: 100vh; justify-content: center; flex-direction: column; margin-left: 5%; margin-right: 5%; background: rgba(128, 128, 128, .8);">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ url_for('gamelist') }}"
+                            class="nav-link text-white px-2 ms-lg-5 mb-2 mb-lg-0">Игры</a></li>
+                    <li><a href="{{ url_for('faq') }}" class="nav-link text-white px-2 ms-5 mb-2 mb-lg-0">FAQ</a>
+                    </li>
+                </ul>
+
+                <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" class="form-control form-control-dark" placeholder="Поиск"
+                        aria-label="Search">
+                </form>
+
+                {% if current_user.is_authenticated %}
+                <div class="d-flex mb-2 mb-md-0">
+                    <div class="dropdown text-end">
+                        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                            id="user-header-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="rounded-circle" id="profile-img"
+                                style="background-image: url('{{ url_for('profile_photo', id=current_user.id) }}');">
+                            </div>
+                            <span class="ms-2">{{ current_user.username }}</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="user-header-dropdown">
+                            <li><a class="dropdown-item" href="#">Профиль</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action='{{ url_for(' logout') }}' id="logout-form">
+                                    <button type="submit" class="logout-link dropdown-item">Выйти</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-light me-2">Вход</button>
+                        <button type="button" class="btn btn-success">Регистрация</button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+    </header>
+
+    <main class="mx-4 min-vh-100">
+        {% if current_user.is_authenticated %}
+        {% if current_user.IdGroup==1 or current_user.IdGroup==2 or current_user.IdGroup==3 %}
+        <a class="fixed-top" title="Добавить модификцию" href="/makenewmod"
+            style="margin-left: 40px; height:40px; width: 40px; margin-top: 100px;"><button
+                style="font-family: 'Font Name'; color:  white; background-color: #00bb2f; height:40px; width: 40px;">+</button></a>
+        {% endif %}
+        {% if current_user.IdGroup==3 %}
+        <a class="fixed-top" title="Добавить игру" href="/game"
+            style="margin-left: 40px; height:40px; width: 40px; margin-top: 200px;"><button
+                style="font-family: 'Font Name'; color:  white; background-color: #00bb2f; height:40px; width: 40px;">
+                <svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M3 5C1.34315 5 0 6.34315 0 8V16C0 17.6569 1.34314 19 3 19H21C22.6569 19 24 17.6569 24 16V8C24 6.34315 22.6569 5 21 5H3ZM2 8C2 7.44772 2.44772 7 3 7H21C21.5523 7 22 7.44771 22 8V16C22 16.5523 21.5523 17 21 17H3C2.44772 17 2 16.5523 2 16V8ZM8 10C8 9.44771 7.55228 9 7 9C6.44772 9 6 9.44771 6 10V11H5C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13H6V14C6 14.5523 6.44772 15 7 15C7.55228 15 8 14.5523 8 14V13H9C9.55228 13 10 12.5523 10 12C10 11.4477 9.55228 11 9 11H8V10ZM16 11.5C16 12.3284 15.3284 13 14.5 13C13.6716 13 13 12.3284 13 11.5C13 10.6716 13.6716 10 14.5 10C15.3284 10 16 10.6716 16 11.5ZM18.5 13C19.3284 13 20 12.3284 20 11.5C20 10.6716 19.3284 10 18.5 10C17.6716 10 17 10.6716 17 11.5C17 12.3284 17.6716 13 18.5 13Z"
+                            fill="#000000"></path>
+                    </g>
+                </svg>
+            </button></a>
+        {% endif %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
-    </div>
-</main>
+    </main>
+    <footer class="bg-dark position-relative">
+        <p class="text-center my-0 p-4">
+            Spymod - Все права защищены. Копирование материалов без указанной активной ссылки на данный сайт запрещено.
+        </p>
+    </footer>
 </body>
-<footer class="page-footer text-center font-small wow fadeIn "style="background-color: rgb(12, 12, 12);">
-  <square class="line-square" style="background-color:#00bb2f; width: 100%; height: 5px; display: block;"></square>
-  <p class="my-0 py-2" style="color: white; margin-top: 20px;">Spymod - Все права защищены. Копирование материалов без указанной активной ссылки на данный сайт запрещено</p>
-</footer>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
 </html>

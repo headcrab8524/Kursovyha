@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2  id="Welcome">Welcome to SpyMod</h2>
-    <a href="/gamelist" style="margin-left: 25%; margin-right: 25%;"><button style="font-family: 'Font Name'; color:  white; background-color: #00bb2f;  width: 100%; ">Перейти к играм</button></a>
+<div class="welcome-section-wrapper d-flex justify-content-center align-items-center vh-100">
+    <section class="welcome-section d-flex flex-column justify-content-center align-items-center text-center mx-3">
+        <h1 class="mb-3">Добро пожаловать на сайт SpyMod!</h1>
+        <p class="mb-5">Пока что тут ничего нет, но в будущем тут что-нибудь напишем</p>
+        <a href="{{ url_for('gamelist') }}">
+            <button class="btn btn-success py-2 px-5">
+                Перейти к играм
+            </button>
+        </a>
+    </section>
+</div>
 {% endblock %}
