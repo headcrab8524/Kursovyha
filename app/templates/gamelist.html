@@ -16,12 +16,13 @@
 </div>
 <section class="game-list d-flex justify-content-center mb-4">
     {% for game in games.items %}
-    <div class="card btn btn-outline-secondary me-3">
+    <div class="card btn btn-outline-secondary" onclick="location = '{{ url_for('mods', game_id=game.id) }}';">
         <div class="game-list-card-img card-img-top"
             style="background-image: url('{{ url_for('game_photo', id=game.id) }}');">
         </div>
         <div class="card-body d-flex align-items-center justify-content-center">
-            <p class="mb-0 text-light" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ game.name }}</p>
+            <p class="mb-0 text-light" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{
+                game.name }}</p>
         </div>
     </div>
     {% endfor %}

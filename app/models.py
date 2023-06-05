@@ -119,4 +119,4 @@ class GameTags(db.Model):
     game = db.relationship('Game', backref=db.backref('GameTags', lazy='dynamic'))
 
     def __repr__(self):
-        return '<GameTags {}>'.format(self.name)
+        return '<GameTags {}>'.format(self.Name)

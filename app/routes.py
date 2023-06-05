@@ -135,3 +135,16 @@ def gamelist():
 @app.route('/faq')
 def faq():
     return render_template("faq.html", title="FAQ")
+
+
+@app.route('/games/<game_id>/mods')
+def mods(game_id):
+    game = Game.query.get(game_id)
+    mods = Mod.query.filter_by(GameId=game_id)
+    tags = []
+    for mod in mods:
+        tag = GameTags.query.get(mod.GameTagId)
+        if tag not in tags:
+            tags.append(tag)
+
+    return render_template("modlist.html", game=game, mods=mods, tags=tags)
