@@ -42,7 +42,8 @@ def addgroup(username, group_id):
     db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/game', methods=['GET','POST'])
+
+@app.route('/game', methods=['GET', 'POST'])
 @login_required
 def game():
     form = MakeGameForm()
@@ -106,11 +107,18 @@ def logout():
 def makenewmod():
     form = MakeNewModForm()
     if form.validate_on_submit():
-        mod = Mod(gamename=form.gamename.data, materialname=form.materialname.data, materialtext=form.materialtext.data,
-                    image=form.image.data.read(), language=form.language.data, mainlink=form.mainlink.data,
-                  maintext=form.maintext.data, sublink=form.sublink.data, subtext=form.subtext.data, tubelink=form.tubelink.data,
-                  tags=form.tags.data, adddate=form.adddate.data)
+        mod = Mod(GameId=form.gamename.data, name=form.materialname.data, Description=form.materialtext.data,
+                  Picture=form.image.data.read(), Language=form.language.data,
+                  GameTagId=form.tags.data, DateCreation=form.adddate.data, AuthorId=current_user.id)
         db.session.add(mod)
+        if form.tubelink.data:
+            mod_video=ModVideo(Link=form.tubelink.data, Modid=mod.id)
+            db.session.add(mod_video)
+        mod_link = ModLink(Link=form.mainlink.data, Modid=mod.id, LinkName=form.mainlink.data)
+        db.session.add(mod_link)
+        if form.sublink.data:
+            mod_link = ModLink(Link=form.sublink.data, Modid=mod.id, LinkName=form.subtext.data)
+            db.session.add(mod_link)
         db.session.commit()
         flash('Поздравляем, вы создали новый мод!')
         return redirect(url_for('index'))
@@ -122,6 +130,7 @@ def gamelist():
     page = request.args.get('page', type=int, default=1)
     games = Game.query.paginate(page=page, per_page=1, error_out=False)
     return render_template("gamelist.html", games=games, title="Список игр")
+
 
 @app.route('/faq')
 def faq():

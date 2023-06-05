@@ -56,6 +56,7 @@ class Mod(db.Model):
     Picture = db.Column(db.LargeBinary)
     Description = db.Column(db.String)
     Language = db.Column(db.String)
+    DateCreation = db.Column(db.Date)
     GameId = db.Column(db.Integer, db.ForeignKey('game.id'))
     game = db.relationship('Game', backref=db.backref('Mod', lazy='dynamic'))
     AuthorId = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -70,6 +71,7 @@ class Mod(db.Model):
 class ModLink(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Link = db.Column(db.String)
+    LinkName = db.Column(db.String)
     Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
     modid = db.relationship('Mod', backref=db.backref('ModLink', lazy='dynamic'))
 
