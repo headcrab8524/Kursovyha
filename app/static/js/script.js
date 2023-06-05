@@ -14,8 +14,8 @@ $(document).ready(function () {
       data: new FormData(this),
       processData: false,
       contentType: false,
-      success: (data, status, xhr) => {
-        window.location = xhr.getResponseHeader("Location");
+      success: () => {
+        window.location.reload();
       },
       error: (response) => {
         const errors = response.responseJSON;
@@ -46,7 +46,7 @@ $(document).ready(function () {
   });
 
   $(".form-validatable input").on("input", function (e) {
-    console.log('gg')
+    console.log("gg");
     const inputName = $(this).attr("name");
     $(this)
       .closest("form")

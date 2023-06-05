@@ -41,22 +41,25 @@
                 {% if current_user.is_authenticated %}
                 <div class="d-flex mb-2 mb-md-0">
                     <div class="dropdown text-end">
-                        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                        <a href="#" class="d-flex align-items-center link-light text-decoration-none dropdown-toggle"
                             id="user-header-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="rounded-circle" id="profile-img"
+                            <div class="profile-photo-header rounded-circle"
                                 style="background-image: url('{{ url_for('profile_photo', id=current_user.id) }}');">
                             </div>
                             <span class="ms-2">{{ current_user.username }}</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="user-header-dropdown">
-                            <li><a class="dropdown-item" href="#">Профиль</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ url_for('user', username=current_user.username) }}">Профиль</a></li>
+                            <li><a class="dropdown-item" href="#">Добавить игру</a></li>
+                            <li><a class="dropdown-item" href="#">Добавить мод</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <form action="{{ url_for('logout') }}" id="logout-form">
-                                    <button type="submit" class="logout-link dropdown-item">Выйти</button>
-                                </form>
+                                <a href="{{ url_for('logout') }}" class="logout-link dropdown-item">
+                                    Выйти
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -127,37 +130,20 @@
     <main class="mx-4 min-vh-100">
         {% if current_user.is_authenticated %}
 
-        {% if current_user.IdGroup in [1, 2, 3] %}
-        <a class="fixed-top" title="Добавить модификцию" href="{{ url_for('makenewmod')}}">
-            <button class="btn btn-success">+</button>
-        </a>
-        {% endif %}
+        <div class="quick-buttons fixed-top ms-5 d-flex flex-column">
+            {% if current_user.IdGroup in [1, 2, 3] %}
+            <a class="btn btn-success mb-3" title="Добавить модификацию" href="{{ url_for('makenewmod')}}">
+                +
+            </a>
+            {% endif %}
 
-        {% if current_user.IdGroup == 3 %}
-        {% endif %}
+            {% if current_user.IdGroup == 3 %}
+            <a class="btn btn-success" title="Добавить игру" href="{{ url_for('game') }}">
+                <img src="/static/img/game.svg" alt="game">
+            </a>
+            {% endif %}
+        </div>
 
-        {% endif %}
-        {% if current_user.is_authenticated %}
-        {% if current_user.IdGroup==1 or current_user.IdGroup==2 or current_user.IdGroup==3 %}
-        <a class="fixed-top" title="Добавить модификцию" href="/makenewmod"
-            style="margin-left: 40px; height:40px; width: 40px; margin-top: 100px;"><button
-                style="font-family: 'Font Name'; color:  white; background-color: #00bb2f; height:40px; width: 40px;">+</button></a>
-        {% endif %}
-        {% if current_user.IdGroup==3 %}
-        <a class="fixed-top" title="Добавить игру" href="/game"
-            style="margin-left: 40px; height:40px; width: 40px; margin-top: 200px;"><button
-                style="font-family: 'Font Name'; color:  white; background-color: #00bb2f; height:40px; width: 40px;">
-                <svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M3 5C1.34315 5 0 6.34315 0 8V16C0 17.6569 1.34314 19 3 19H21C22.6569 19 24 17.6569 24 16V8C24 6.34315 22.6569 5 21 5H3ZM2 8C2 7.44772 2.44772 7 3 7H21C21.5523 7 22 7.44771 22 8V16C22 16.5523 21.5523 17 21 17H3C2.44772 17 2 16.5523 2 16V8ZM8 10C8 9.44771 7.55228 9 7 9C6.44772 9 6 9.44771 6 10V11H5C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13H6V14C6 14.5523 6.44772 15 7 15C7.55228 15 8 14.5523 8 14V13H9C9.55228 13 10 12.5523 10 12C10 11.4477 9.55228 11 9 11H8V10ZM16 11.5C16 12.3284 15.3284 13 14.5 13C13.6716 13 13 12.3284 13 11.5C13 10.6716 13.6716 10 14.5 10C15.3284 10 16 10.6716 16 11.5ZM18.5 13C19.3284 13 20 12.3284 20 11.5C20 10.6716 19.3284 10 18.5 10C17.6716 10 17 10.6716 17 11.5C17 12.3284 17.6716 13 18.5 13Z"
-                            fill="#000000"></path>
-                    </g>
-                </svg>
-            </button></a>
-        {% endif %}
         {% endif %}
 
         {% block content %}
