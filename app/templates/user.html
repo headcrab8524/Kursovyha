@@ -1,78 +1,79 @@
 {% extends "base.html" %}
+
+{% block title %}
+Профиль пользователя {{ user.username }}
+{% endblock %}
+
 {% block content %}
-<section class="p-5">
-    <h3>Профиль пользователя "{{ user.username }}"</h3>
-    
-</section>
-    <div>
-        <div>
-            <td> <img class="rounded-circle" src="{{url_for('profile_photo',id=user.id)}}" style=" margin-left: 40px; width: 300px; height:300px;"></td>
+<section class="pt-5 pb-5">
+    <section class="ps-md-5 d-flex flex-column align-items-center">
+        <h3 class="profile-title ms-4 mb-4 text-center">Профиль пользователя <b>"{{ user.username }}"</b></h3>
+        <div class="ms-md-5 profile-photo-on-page rounded-circle"
+            style="background-image: url('{{ url_for('profile_photo', id=user.id) }}');">
         </div>
-        <div style="display: flex; background-color:#222222;">
-            <div style="display: flex; flex-direction:column; height: 100%; align-items: stretch;">
-            <square class="line-square" style="background-color:#00bb2f; height: 10px; display: block;"></square>
-            <div style="background: rgba(128, 128, 128, .8);">
-                <p style="margin: 15px 5px 15px 5px;">
+    </section>
+
+    <div class="container-fluid bg-dark mt-5">
+        <div class="row">
+            <h3 class="user-info-title position-relative col-md-3 py-3 mb-0 bg-light-dark text-center">
                 {{ user.username }}
-                </p>
+            </h3>
+            <hr class="mb-0">
+        </div>
+        <div class="row">
+            <div class="col-md-6 container pt-3 bg-light-dark pb-5 px-4">
+                <div class="row">
+                    <h5 class="ms-3 mb-3">Основная информация</h5>
+                </div>
+
+                <div class="row bg-dark border border-secondary py-3">
+                    <div class="col-6"><b>Имя пользователя:</b></div>
+                    <div class="col-6">{{ user.username }}</div>
+                </div>
+                <div class="row bg-dark border border-secondary py-3">
+                    <div class="col-6"><b>Группа:</b></div>
+                    {% if current_user.is_authenticated and current_user.IdGroup == 3 %}
+                    <select name="user-groups" id="user-groups-select" class="form-select form-select-sm w-25"
+                        onchange="location = this.value;">
+                        <option value="{{ url_for('addgroup', username=user.username, group_id=0) }}" {{ "selected" if
+                            user.IdGroup==0 }}>user</option>
+                        <option value="{{ url_for('addgroup', username=user.username, group_id=1) }}" {{ "selected" if
+                            user.IdGroup==1 }}>modmaker</option>
+                        <option value="{{ url_for('addgroup', username=user.username, group_id=2) }}" {{ "selected" if
+                            user.IdGroup==2 }}>moderator</option>
+                        <option value="{{ url_for('addgroup', username=user.username, group_id=3) }}" {{ "selected" if
+                            user.IdGroup==3 }}>admin</option>
+                    </select>
+                    {% else %}
+                    <div class="col-6">{{ user.group.name }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="row bg-dark border border-secondary py-3">
+                    <div class="col-6"><b>E-mail:</b></div>
+                    <div class="col-6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{
+                        user.email }}</div>
+                </div>
             </div>
+
+            <div class="col-md-6 container pt-3 bg-light-dark pb-5 pe-4">
+                <div class="row">
+                    <h5 class="ms-3 mb-3">Дополнительная информация</h5>
+                </div>
+
+                <div class="row bg-dark border border-secondary py-3">
+                    <div class="col-6"><b>Дата рождения:</b></div>
+                    <div class="col-6">{{ user.Birth_Date }}</div>
+                </div>
+                <div class="row bg-dark border border-secondary py-3">
+                    <div class="col-6"><b>Пол:</b></div>
+                    <div class="col-6">{{ user.Sex }}</div>
+                </div>
+                <div class="row bg-dark border border-secondary py-3">
+                    <div class="col-6"><b>Страна:</b></div>
+                    <div class="col-6">{{ user.Country }}</div>
+                </div>
             </div>
         </div>
-    <div style="display:flex; flex-direction: row; justify-content: space-evenly; margin-top: 15px;">
-        <div style="display:flex; flex-direction: column;">
-            <p>Основная информация</p>
-            <div style="display:flex; flex-direction: row; background-color:#222222; padding: 5px; margin: 5px;">
-                <div>
-                    <p style="margin: 15px;">Имя:</p>
-                </div>
-                <div>
-                    <p style="margin: 15px;">{{ user.username }}</p>
-                </div>
-            </div>
-            <div style="display:flex; flex-direction: row; background-color:#222222; padding: 5px; margin: 5px;">
-                <div>
-                    <p style="margin: 15px;">Группа:</p>
-                </div>
-                <div>
-                    <p style="margin: 15px;">{{ user.group.name }}</p>
-                </div>
-            </div>
-            <div style="display:flex; flex-direction: row; background-color:#222222; padding: 5px; margin: 5px;">
-                <div>
-                    <p style="margin: 15px;">Дата рождения:</p>
-                </div>
-                <div>
-                    <p style="margin: 15px;">{{ user.Birth_Date }}</p>
-                </div>
-            </div>
-            <div style="display:flex; flex-direction: row; background-color:#222222; padding: 5px; margin: 5px;">
-                <div>
-                    <p style="margin: 15px;">Пол:</p>
-                </div>
-                <div>
-                    <p style="margin: 15px;">{{ user.Sex }}</p>
-                </div>
-            </div>
-            <div style="display:flex; flex-direction: row; background-color:#222222; padding: 5px; margin: 5px;">
-                <div>
-                    <p style="margin: 15px;">Страна:</p>
-                </div>
-                <div>
-                    <p style="margin: 15px;">{{ user.Country }}</p>
-                </div>
-            </div>
-        </div>
-        <div style="display:flex; flex-direction: column;">
-            <p>Дополнительная информация</p>
-            <div style="display:flex; flex-direction: row; background-color:#222222; padding: 5px; margin: 5px;">
-                <div>
-                    <p style="margin: 15px;">E-mail:</p>
-                </div>
-                <div>
-                    <p style="margin: 15px;">{{ user.email }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+</section>
 {% endblock %}

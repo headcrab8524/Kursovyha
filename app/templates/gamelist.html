@@ -1,48 +1,62 @@
 {% extends "base.html" %}
 
+{% block title %}
+Список игр
+{% endblock %}
+
 {% block content %}
-<h1>Выберите одну из игр</h1>
-<div class="d-flex" style="justify-content: center;">
-    {% for game in games.items %}
-      <div class="card" style="margin: 10px; width: 17%; background-color:#AAAAAA; border: 5px solid #20B621;">
-          <img src="{{url_for('game_photo',id=game.id)}}" class="card-img-top" style="background-size: cover; background-position: center center;">
-          <div class="card-body d-flex align-items-center justify-content-center">
-              <div class="mb-0" style="color: #000000">{{ game.name }}</div>
+<h3 class="ps-5 pt-5 ms-3 mb-3">Выберите одну из игр</h3>
+<div class="container ms-5 px-3 py-3 mb-4">
+    <div class="row">
+        <div class="col-8 col-md-4">
+            <h6>Фильтр по названию:</h6>
+            <input type="text" class="form-control" placeholder="Введите название..." autocomplete="off">
         </div>
-      </div>
-    {% endfor %}
+    </div>
 </div>
+<section class="game-list d-flex justify-content-center mb-4">
+    {% for game in games.items %}
+    <div class="card btn btn-outline-secondary me-3">
+        <div class="game-list-card-img card-img-top"
+            style="background-image: url('{{ url_for('game_photo', id=game.id) }}');">
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center">
+            <p class="mb-0 text-light" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ game.name }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</section>
 
 {% if games.pages > 1 %}
-    <nav aria-label="Пагинация" class="mt-3">
-        <ul class="pagination justify-content-center">
-            <li class="page-item {% if not games.has_prev %} disabled {% endif %}">
-                <a class="page-link" href="{{ url_for('gamelist' , page=games.prev_num) }}">
-                    <span class="d-none d-md-inline">Предыдущая</span>
-                    <span class="d-inline d-md-none">&#60&#60</span>
-                </a>
-            </li>
-            {% for i in games.iter_pages(
-            left_edge=1, left_current=2, right_current=2, right_edge=1
-            ) %}
-            {% if i %}
-            <li class="page-item {% if i == games.page %} active {% endif %}">
-                <a class="page-link" href="{{ url_for('gamelist', page=i ) }}>{{ i }}"></a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-                <a class="page-link">...</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-            <li class="page-item {% if not games.has_next %} disabled {% endif %}">
-                <a class="page-link" href="{{ url_for( 'gamelist' , page=games.next_num ) }}">
-                    <span class="d-none d-md-inline">Следующая</span>
-                    <span class="d-inline d-md-none">&#62&#62</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    {% endif %}
+<nav aria-label="Пагинация" class="mt-3 mb-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {% if not games.has_prev %} disabled {% endif %}">
+            <a class="page-link bg-dark border-secondary" href="{{ url_for('gamelist' , page=games.prev_num) }}">
+                <span class="d-none d-md-inline">Предыдущая</span>
+                <span class="d-inline d-md-none">&#60&#60</span>
+            </a>
+        </li>
+        {% for i in games.iter_pages(
+        left_edge=1, left_current=2, right_current=2, right_edge=1
+        ) %}
+        {% if i %}
+        <li class="page-item {% if i == games.page %} active {% endif %}">
+            <a class="page-link bg-dark border-secondary" href="{{ url_for('gamelist', page=i ) }}">{{ i }}</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link bg-dark border-secondary">...</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <li class="page-item {% if not games.has_next %} disabled {% endif %}">
+            <a class="page-link bg-dark border-secondary" href="{{ url_for( 'gamelist' , page=games.next_num ) }}">
+                <span class="d-none d-md-inline">Следующая</span>
+                <span class="d-inline d-md-none">&#62&#62</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
 
 {% endblock %}
