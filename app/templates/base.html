@@ -51,8 +51,6 @@
                         <ul class="dropdown-menu" aria-labelledby="user-header-dropdown">
                             <li><a class="dropdown-item"
                                     href="{{ url_for('user', username=current_user.username) }}">Профиль</a></li>
-                            <li><a class="dropdown-item" href="#">Добавить игру</a></li>
-                            <li><a class="dropdown-item" href="#">Добавить мод</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -130,9 +128,9 @@
     <main class="mx-4 min-vh-100">
         {% if current_user.is_authenticated %}
 
-        <div class="quick-buttons fixed-top ms-5 d-flex flex-column">
+        <div class="quick-buttons fixed-top ms-4 d-flex flex-column">
             {% if current_user.IdGroup in [1, 2, 3] %}
-            <a class="btn btn-success mb-3" title="Добавить модификацию" href="{{ url_for('makenewmod')}}">
+            <a class="btn btn-success mb-3" title="Добавить модификацию" href="{{ url_for('makenewmod') }}">
                 +
             </a>
             {% endif %}

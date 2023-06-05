@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
+<div>
     <div>
-        <div>
 
-        </div>
-        <div style="display: flex; background-color:#222222;">
-            <div style="display: flex; flex-direction:column; height: 100%; align-items: stretch;">
+    </div>
+    <div style="display: flex; background-color:#222222;">
+        <div style="display: flex; flex-direction:column; height: 100%; align-items: stretch;">
             <square class="line-square" style="background-color:#00bb2f; height: 10px; display: block;"></square>
             <div style="background: rgba(128, 128, 128, .8);">
                 <p style="margin: 15px 5px 15px 5px;">
-                {{ current_user.username }}
+                    {{ current_user.username }}
                 </p>
             </div>
-            </div>
         </div>
+    </div>
     <div style="display:flex; flex-direction: row; justify-content: space-evenly; margin-top: 15px;">
         <div style="display:flex; flex-direction: column;">
             <p>Основная информация</p>
@@ -70,5 +70,5 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 {% endblock %}
