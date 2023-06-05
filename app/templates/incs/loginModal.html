@@ -1,0 +1,41 @@
+<div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="login-modal-label">Вход</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form" action="{{ url_for('login') }}" method="post" class="form-validatable" novalidate>
+                    <p>
+                        {{ login_form.username.label() }}<br>
+                        {{ login_form.username(class="form-control", size=32) }}
+                        <div class="input-errors text-warning" data-input="username"></div>
+                    </p>
+                    <p>
+                        {{ login_form.password.label() }}<br>
+                        {{ login_form.password(class="form-control", size=32) }}
+                        <div class="input-errors text-warning" data-input="password"></div>
+                    </p>
+                    <div class="form-check mb-4">
+                        {{ login_form.remember_me(class="form-check-input") }}
+                        {{ login_form.remember_me.label(class="form-check-label") }}
+                        <div class="input-errors text-warning" data-input="remember_me"></div>
+                    </div>
+                    <p class="form-text text-white">
+                        Ещё нет аккаунта?
+                        <a href="{{ url_for('register') }}" class="link-light">
+                            Регистрация
+                        </a>
+                    </p>
+                    <p></p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Закрыть</button>
+                {{ login_form.submit(class="btn btn-success px-4", form="login-form") }}
+            </div>
+        </div>
+    </div>
+</div>

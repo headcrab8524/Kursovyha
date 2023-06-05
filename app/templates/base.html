@@ -54,7 +54,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <form action='{{ url_for(' logout') }}' id="logout-form">
+                                <form action="{{ url_for('logout') }}" id="logout-form">
                                     <button type="submit" class="logout-link dropdown-item">Выйти</button>
                                 </form>
                             </li>
@@ -62,7 +62,8 @@
                     </div>
                     {% else %}
                     <div class="text-end">
-                        <button type="button" class="btn btn-outline-light me-2">Вход</button>
+                        <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal"
+                            data-bs-target="#login-modal">Вход</button>
                         <button type="button" class="btn btn-success">Регистрация</button>
                     </div>
                     {% endif %}
@@ -88,8 +89,7 @@
                 </ul>
 
                 <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" class="form-control form-control-dark" placeholder="Поиск"
-                        aria-label="Search">
+                    <input type="search" class="form-control form-control-dark" placeholder="Поиск" aria-label="Search">
                 </form>
 
                 {% if current_user.is_authenticated %}
@@ -108,7 +108,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <form action='{{ url_for(' logout') }}' id="logout-form">
+                                <form action="{{ url_for('logout') }}" id="logout-form">
                                     <button type="submit" class="logout-link dropdown-item">Выйти</button>
                                 </form>
                             </li>
@@ -125,6 +125,18 @@
     </header>
 
     <main class="mx-4 min-vh-100">
+        {% if current_user.is_authenticated %}
+
+        {% if current_user.IdGroup in [1, 2, 3] %}
+        <a class="fixed-top" title="Добавить модификцию" href="{{ url_for('makenewmod')}}">
+            <button class="btn btn-success">+</button>
+        </a>
+        {% endif %}
+
+        {% if current_user.IdGroup == 3 %}
+        {% endif %}
+
+        {% endif %}
         {% if current_user.is_authenticated %}
         {% if current_user.IdGroup==1 or current_user.IdGroup==2 or current_user.IdGroup==3 %}
         <a class="fixed-top" title="Добавить модификцию" href="/makenewmod"
@@ -156,6 +168,10 @@
             Spymod - Все права защищены. Копирование материалов без указанной активной ссылки на данный сайт запрещено.
         </p>
     </footer>
+
+    {% if not current_user.is_authenticated %}
+    {% include "incs/loginModal.html" %}
+    {% endif %}
 </body>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -164,5 +180,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+<script src="/static/js/script.js"></script>
 
 </html>
