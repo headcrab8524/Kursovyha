@@ -1,65 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Регистрация пользователя</h1>
-<form enctype="multipart/form-data" action="" method="post">
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.username.label }}<br>
-    {{ form.username(size=32) }}<br>
-    {% for error in form.username.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password.label }}<br>
-    {{ form.password(size=32) }}<br>
-    {% for error in form.password.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password2.label }}<br>
-    {{ form.password2(size=32) }}<br>
-    {% for error in form.password2.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.email.label }}<br>
-    {{ form.email(size=64) }}<br>
-    {% for error in form.email.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.birthdate.label }}<br>
-    {{ form.birthdate }}<br>
-    {% for error in form.birthdate.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.sex.label }}<br>
-    {{ form.sex }}<br>
+<section class="ps-5 pt-5 pb-5 pe-5">
+  <h1 class="ps-3 mb-4">Регистрация пользователя</h1>
+  <form enctype="multipart/form-data" action="{{url_for('register')}}" method="post" class="ps-3 form-validatable"
+    data-next="{{ url_for('index') }}" novalidate>
+    <p class="mb-0">
+      {{ form.username.label }}<br>
+      {{ form.username(size=32, class="form-control") }}
+      <div class="input-errors text-warning" data-input="username"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.password.label }}<br>
+      {{ form.password(size=32, class="form-control") }}
+      <div class="input-errors text-warning" data-input="password"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.password2.label }}<br>
+      {{ form.password2(size=32, class="form-control") }}
+      <div class="input-errors text-warning" data-input="password2"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.email.label }}<br>
+      {{ form.email(size=64, class="form-control") }}
+      <div class="input-errors text-warning" data-input="email"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.birthdate.label }}<br>
+      {{ form.birthdate(class="form-control") }}
+      <div class="input-errors text-warning" data-input="birthdate"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.sex.label }}<br>
+      {{ form.sex(class="form-control") }}
+      <div class="input-errors text-warning" data-input="sex"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.country.label }}<br>
+      {{ form.country(size=32, class="form-control") }}
+      <div class="input-errors text-warning" data-input="country"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.avatar.label }}<br>
+      {{ form.avatar(class="form-control") }}
+      <div class="input-errors text-warning" data-input="avatar"></div>
+    </p>
 
-  </p>
-  <p>
-    {{ form.country.label }}<br>
-    {{ form.country(size=32) }}<br>
-    {% for error in form.country.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.avatar.label }}<br>
-    {{ form.avatar }}<br>
+    <div class="form-check mb-5">
+      {{ form.policy(class="form-check-input") }}
+      {{ form.policy.label(class="form-check-label") }}
+      <div class="input-errors text-warning" data-input="policy"></div>
+    </div>
 
-  </p>
-  <p>
-    {{ form.policy.label }}<br>
-    {{ form.policy }}<br>
-
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+    <p>{{ form.submit(class="btn btn-success w-100") }}</p>
+  </form>
+</section>
 {% endblock %}

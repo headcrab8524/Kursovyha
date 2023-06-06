@@ -12,7 +12,7 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       success: () => {
-        window.location.reload();
+        window.location = $(this).data("next");
       },
       error: (response) => {
         const errors = response.responseJSON;
@@ -50,4 +50,9 @@ $(document).ready(function () {
       .find(`.input-errors[data-input="${inputName}"]`)
       .text("");
   });
+
+  if ($(".mod-page-description").length) {
+    $(".mod-page-description").html($(".mod-page-description").eq(0).text());
+    $(".mod-page-description").removeClass("d-none");
+  }
 });

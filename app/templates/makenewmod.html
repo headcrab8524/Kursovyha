@@ -1,62 +1,80 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Добавление модификации</h1>
-<form enctype="multipart/form-data" action="" method="post">
-  <p>
-    {{ form.gamename.label }}<br>
-    {{ form.gamename }}<br>
-  </p>
-  <p>
-    {{ form.materialname.label }}<br>
-    {{ form.materialname }}<br>
-  </p>
-  <p>
-    {{ form.desctex.label }}<br>
-    {{ form.desctex(class='w-100' ,rows=10)}}<br>
-  </p>
-  <p>
-    {{ form.materialtext.label }}<br>
-    {{ form.materialtext }}<br>
-  </p>
-  <p>
-    {{ form.image.label }}<br>
-    {{ form.image }}<br>
-  </p>
-  <p>
-    {{ form.language.label }}<br>
-    {{ form.language }}<br>
-  </p>
+<section class="pt-5 ps-5 pe-5 pb-5">
+  <h1 class="ps-3 mb-4">Добавление модификации</h1>
+  <form enctype="multipart/form-data" action="{{ url_for('makenewmod') }}" method="post" class="ms-3 form-validatable" data-next="{{ url_for('index') }}" novalidate>
+    <p class="mb-0">
+      {{ form.gamename.label }}<br>
+      {{ form.gamename(class="form-select") }}
+      <div class="input-errors text-warning" data-input="gamename"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.materialname.label }}<br>
+      {{ form.materialname(class="form-control") }}
+      <div class="input-errors text-warning" data-input="materialname"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.desctex.label }}<br>
+      {{ form.desctex(class='w-100 form-control' ,rows=10)}}
+      <div class="input-errors text-warning" data-input="desctex"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.materialtext.label }}<br>
+      {{ form.materialtext }}
+      <div class="input-errors text-warning" data-input="materialtext"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.image.label }}<br>
+      {{ form.image(class="form-control") }}
+      <div class="input-errors text-warning" data-input="image"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.language.label }}<br>
+      {{ form.language(class="form-select") }}
+      <div class="input-errors text-warning" data-input="language"></div>
+    </p>
 
-  <p>
-    {{ form.mainlink.label }}<br>
-    {{ form.mainlink }}<br>
-  </p>
-  <p>
-    {{ form.maintext.label }}<br>
-    {{ form.maintext }}<br>
-  </p>
-  <p>
-    {{ form.sublink.label }}<br>
-    {{ form.sublink }}<br>
-  </p>
-  <p>
-    {{ form.subtext.label }}<br>
-    {{ form.subtext }}<br>
-  </p>
-  <p>
-    {{ form.tubelink.label }}<br>
-    {{ form.tubelink }}<br>
-  </p>
-  <p>
-    {{ form.tags.label }}<br>
-    {{ form.tags }}<br>
-  </p>
-  <p>
-    {{ form.adddate.label }}<br>
-    {{ form.adddate }}<br>
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+    <p class="mb-0">
+      {{ form.mainlink.label }}<br>
+      {{ form.mainlink(class="form-control") }}
+      <div class="input-errors text-warning" data-input="mainlink"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.maintext.label }}<br>
+      {{ form.maintext(class="form-control") }}
+      <div class="input-errors text-warning" data-input="maintext"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.sublink.label }}<br>
+      {{ form.sublink(class="form-control") }}
+      <div class="input-errors text-warning" data-input="sublink"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.subtext.label }}<br>
+      {{ form.subtext(class="form-control") }}
+      <div class="input-errors text-warning" data-input="subtext"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.tubelink.label }}<br>
+      {{ form.tubelink(class="form-control") }}
+      <div class="input-errors text-warning" data-input="tubelink"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.tags.label }}<br>
+      {{ form.tags(class="form-control") }}
+      <div class="input-errors text-warning" data-input="tags"></div>
+    </p>
+    <p class="mb-0">
+      {{ form.adddate.label }}<br>
+      {{ form.adddate(class="form-control") }}
+      <div class="input-errors text-warning" data-input="adddate"></div>
+    </p>
+    <div class="d-flex justify-content-center mt-5">
+      {{ form.submit(class="btn btn-success w-100") }}
+    </div>
+  </form>
+</section>
+
 {{ ckeditor.load() }}
 {{ ckeditor.config(name='body')}}
 {% endblock %}

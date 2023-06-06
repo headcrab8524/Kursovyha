@@ -6,17 +6,17 @@ from flask_ckeditor import CKEditorField
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Логин/Nickname*', validators=[DataRequired()])
-    password = PasswordField('Пароль/Password*', validators=[DataRequired()])
+    username = StringField('Логин/Nickname*', validators=[DataRequired('Обязательное поле')])
+    password = PasswordField('Пароль/Password*', validators=[DataRequired('Обязательное поле')])
     password2 = PasswordField('Пароль (подтверждение)/Password (again)*',
-                              validators=[DataRequired(), EqualTo('password')])
-    email = StringField('Электронная почта/E-mail address*', validators=[DataRequired(), Email()])
-    birthdate = DateField('Дата рождения/Date of birth', validators=[DataRequired()])
-    sex = SelectField('Ваш пол/ Your gender', choices=['Мужской', 'Женский'], validators=[DataRequired()])
-    country = StringField('Страна/Country', validators=[DataRequired()])
+                              validators=[DataRequired('Обязательное поле'), EqualTo('password', 'Пароли должны совпадать')])
+    email = StringField('Электронная почта/E-mail address*', validators=[DataRequired('Обязательное поле'), Email('Неправильный email')])
+    birthdate = DateField('Дата рождения/Date of birth', validators=[DataRequired('Обязательное поле')])
+    sex = SelectField('Ваш пол/ Your gender', choices=['Мужской', 'Женский'], validators=[DataRequired('Обязательное поле')])
+    country = StringField('Страна/Country', validators=[DataRequired('Обязательное поле')])
     avatar = FileField('Аватар/Avatar')
     policy = BooleanField('Согласен с политикой конфиденциальности/Agree with privacy policy*',
-                          validators=[DataRequired()])
+                          validators=[DataRequired('Обязательное поле')])
     submit = SubmitField('Зарегистрироваться')
 
     def validate_username(self, username):
@@ -50,22 +50,22 @@ class MakeGameForm(FlaskForm):
 
 
 class MakeNewModForm(FlaskForm):
-    gamename = SelectField('Выберите игру:*', choices=[], validators=[DataRequired()])
-    materialname = StringField('Введите название материала:*', validators=[DataRequired()])
-    desctex = TextAreaField('Введите описание карточки вашей модификации:*', validators=[DataRequired()])
-    materialtext = CKEditorField('Введите описание вашего материала:*', validators=[DataRequired()])
+    gamename = SelectField('Выберите игру:*', choices=[], validators=[DataRequired('Обязательное поле')])
+    materialname = StringField('Введите название материала:*', validators=[DataRequired('Обязательное поле')])
+    desctex = TextAreaField('Введите описание карточки вашей модификации:*', validators=[DataRequired('Обязательное поле')])
+    materialtext = CKEditorField('Введите описание вашего материала:*', validators=[DataRequired('Обязательное поле')])
 
     image = FileField('Изображение (максимальный размер 300 Кб)')
     language = SelectField('Язык локализации мода:*',
                            choices=['Мультиязычный', 'Русский', 'Английский', 'Испанский', 'Итальянский', 'Немецкий',
-                                    'Французский', 'Японский', 'Китайский', 'Иврит'], validators=[DataRequired()])
-    mainlink = StringField('Основной архив мода №1 (ссылка):*', validators=[DataRequired()])
-    maintext = StringField('Краткое описание основного архива №1 (текст):*', validators=[DataRequired()])
+                                    'Французский', 'Японский', 'Китайский', 'Иврит'], validators=[DataRequired('Обязательное поле')])
+    mainlink = StringField('Основной архив мода №1 (ссылка):*', validators=[DataRequired('Обязательное поле')])
+    maintext = StringField('Краткое описание основного архива №1 (текст):*', validators=[DataRequired('Обязательное поле')])
     sublink = StringField('Дополнительный архив мода:')
     subtext = StringField('Краткое описание доп. архива:')
     tubelink = StringField('Ссылка видео с YouTube:')
-    tags = SelectField('Выберите тег вашей модификации:*', choices=[], validators=[DataRequired()])
-    adddate = DateField('Дата добавления:', validators=[DataRequired()])
+    tags = SelectField('Выберите тег вашей модификации:*', choices=[], validators=[DataRequired('Обязательное поле')])
+    adddate = DateField('Дата добавления:', validators=[DataRequired('Обязательное поле')])
     submit = SubmitField('Добавить')
 
     def __init__(self, *args, **kwargs):

@@ -7,7 +7,7 @@
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="login-form" action="{{ url_for('login') }}" method="post" class="form-validatable" novalidate>
+                <form id="login-form" action="{{ url_for('login') }}" method="post" class="form-validatable" data-next="{{ url_for('index') }}" novalidate>
                     <p>
                         {{ login_form.username.label() }}<br>
                         {{ login_form.username(class="form-control", size=32) }}

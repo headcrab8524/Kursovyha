@@ -23,6 +23,7 @@ import shlex
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+    
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, Sex=form.sex.data,
@@ -33,7 +34,14 @@ def register():
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('index'))
-    return render_template('register.html', title='Register', form=form)
+    elif form.errors:
+        return jsonify(form.errors), 400
+    else:
+        if current_user.is_anonymous:
+            login_form = LoginForm()
+            return render_template('register.html', title='Register', form=form, login_form=login_form)
+        
+        return render_template('register.html', title='Register', form=form)
 
 
 @app.route('/user/<username>/<group_id>')
@@ -42,6 +50,9 @@ def addgroup(username, group_id):
     user.IdGroup = group_id
     db.session.add(user)
     db.session.commit()
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        return redirect(url_for('user', username=username, login_form=login_form))
     return redirect(url_for('user', username=username))
 
 
@@ -60,6 +71,9 @@ def game():
 @app.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        return render_template('user.html', title="Profile", user=user, login_form=login_form)
     return render_template('user.html', title="Profile", user=user)
 
 
@@ -124,6 +138,8 @@ def makenewmod():
         db.session.commit()
         flash('Поздравляем, вы создали новый мод!')
         return redirect(url_for('index'))
+    elif form.errors:
+        return jsonify(form.errors), 400
     return render_template('makenewmod.html', title='Создание мода', form=form)
 
 
@@ -140,11 +156,20 @@ def gamelist():
     
     page = request.args.get('page', type=int, default=1)
     games = games.order_by(Game.name).paginate(page=page, per_page=10, error_out=False)
+
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        return render_template("gamelist.html", games=games, title="Список игр", login_form=login_form)
+    
     return render_template("gamelist.html", games=games, title="Список игр")
 
 
 @app.route('/faq')
 def faq():
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        return render_template("faq.html", title="FAQ", login_form=login_form)
+    
     return render_template("faq.html", title="FAQ")
 
 
@@ -203,6 +228,11 @@ def mods():
     kwargs.update({'tags_filter': tags_in_filter})
 
     # сохранение тегов, по которым идёт фильтрация, в куки
+
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        kwargs.update({'login_form': login_form})
+
     response = make_response(render_template('modlist.html', **kwargs))
     response.set_cookie('tags_filter', ' '.join(tags_in_filter))
 
@@ -212,3 +242,14 @@ def mods():
 def mod_photo(mod_id):
     mod = Mod.query.get(mod_id)
     return mod.Picture or redirect('/static/img/logo.svg')
+
+
+@app.route('/mod/<mod_id>')
+def mod(mod_id):
+    mod = Mod.query.get(mod_id)
+
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        return render_template("mod.html", mod=mod, login_form=login_form)
+    
+    return render_template("mod.html", mod=mod)

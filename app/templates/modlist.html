@@ -46,7 +46,7 @@
 {% if mods.items %}
 <section class="mods-list ms-5 ps-3 pb-5">
     {% for mod in mods %}
-    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative" onclick="">
+    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative" onclick="window.location='{{url_for('mod', mod_id=mod.id)}}'">
         <div class="mod-card-info bg-dark d-flex align-items-center">
             <img src="/static/img/eye.svg" alt="eye" class="ms-2" style="display: inline-block; height: 1rem;">
             <span class="ms-1" style="font-size: .9rem;">{{ mod.views.count() }}</span>

@@ -202,6 +202,16 @@ main {
   background-color: #6c757d;
 }
 
+.mod-page-banner {
+  width: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .mod-page-banner {
+    width: 90%;
+  }
+}
+
 .fs-8 {
   font-size: 0.8rem;
 }
