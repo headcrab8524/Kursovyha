@@ -52,13 +52,15 @@ class MakeGameForm(FlaskForm):
 class MakeNewModForm(FlaskForm):
     gamename = SelectField('Выберите игру:*', choices=[], validators=[DataRequired()])
     materialname = StringField('Введите название материала:*', validators=[DataRequired()])
+    desctex = TextAreaField('Введите описание карточки вашей модификации:*', validators=[DataRequired()])
     materialtext = CKEditorField('Введите описание вашего материала:*', validators=[DataRequired()])
+
     image = FileField('Изображение (максимальный размер 300 Кб)')
     language = SelectField('Язык локализации мода:*',
                            choices=['Мультиязычный', 'Русский', 'Английский', 'Испанский', 'Итальянский', 'Немецкий',
                                     'Французский', 'Японский', 'Китайский', 'Иврит'], validators=[DataRequired()])
-    mainlink = StringField('Основной архив мода №1 (ссылка):', validators=[DataRequired()])
-    maintext = StringField('Краткое описание основного архива №1 (текст):', validators=[DataRequired()])
+    mainlink = StringField('Основной архив мода №1 (ссылка):*', validators=[DataRequired()])
+    maintext = StringField('Краткое описание основного архива №1 (текст):*', validators=[DataRequired()])
     sublink = StringField('Дополнительный архив мода:')
     subtext = StringField('Краткое описание доп. архива:')
     tubelink = StringField('Ссылка видео с YouTube:')
