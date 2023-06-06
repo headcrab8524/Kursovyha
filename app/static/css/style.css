@@ -150,6 +150,56 @@ main {
   border-color: #198754 !important;
 }
 
+.mods-list .card {
+  display: block;
+  color: white;
+  font-weight: 600;
+  width: 18%;
+  height: 20rem;
+  overflow: hidden;
+  background: rgba(50, 50, 50, .6);
+}
+
+.mod-banner {
+  display: block;
+  width: 100%;
+  height: 60%;
+  background-size: cover;
+  background-position: center center;
+}
+
+.mods-list .card:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  background-color: #6c757d;
+  height: 1rem;
+  width: 100%;
+}
+
+.fs-8 {
+  font-size: .8rem;
+}
+
+@media screen and (max-width: 992px) {
+  .mods-list .card {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mods-list .card {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .mods-list .card {
+    width: 75%;
+  }
+}
 
 .filmN {
   white-space: nowrap;

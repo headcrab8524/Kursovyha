@@ -146,5 +146,13 @@ def mods(game_id):
         tag = GameTags.query.get(mod.GameTagId)
         if tag not in tags:
             tags.append(tag)
+    tags = GameTags.query.all()
+    mods = Mod.query.all()
 
     return render_template("modlist.html", game=game, mods=mods, tags=tags)
+
+
+@app.route('/mod_photo/<mod_id>')
+def mod_photo(mod_id):
+    mod = Mod.query.get(mod_id)
+    return mod.Picture or redirect('/static/img/logo.svg')
