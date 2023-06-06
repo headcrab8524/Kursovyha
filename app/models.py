@@ -55,6 +55,7 @@ class Mod(db.Model):
     name = db.Column(db.String(140))
     Picture = db.Column(db.LargeBinary)
     Description = db.Column(db.String)
+    DescriptionCard = db.Column(db.String)
     Language = db.Column(db.String)
     DateCreation = db.Column(db.Date)
     GameId = db.Column(db.Integer, db.ForeignKey('game.id'))
@@ -98,6 +99,23 @@ class ModVideo(db.Model):
     def __repr__(self):
         return '<ModVideo {}>'.format(self.name)
 
+class ModViews(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
+    mod = db.relationship('Mod', backref=db.backref('Mod', lazy='dynamic'))
+    AuthorId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User', backref=db.backref('User', lazy='dynamic'))
+    def __repr__(self):
+        return '<ModVievs {}>'.format(self.name)
+
+class ModDownload(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
+    mod = db.relationship('Mod', backref=db.backref('Mod', lazy='dynamic'))
+    AuthorId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User', backref=db.backref('User', lazy='dynamic'))
+    def __repr__(self):
+        return '<ModDownload {}>'.format(self.name)
 
 class ModComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

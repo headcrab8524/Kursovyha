@@ -108,7 +108,7 @@ def makenewmod():
     form = MakeNewModForm()
     if form.validate_on_submit():
         mod = Mod(GameId=form.gamename.data, name=form.materialname.data, Description=form.materialtext.data,
-                  Picture=form.image.data.read(), Language=form.language.data,
+                  Picture=form.image.data.read(), DescriptionCard=form.desctex.data, Language=form.language.data,
                   GameTagId=form.tags.data, DateCreation=form.adddate.data, AuthorId=current_user.id)
         db.session.add(mod)
         if form.tubelink.data:
@@ -128,7 +128,7 @@ def makenewmod():
 @app.route('/gamelist')
 def gamelist():
     page = request.args.get('page', type=int, default=1)
-    games = Game.query.paginate(page=page, per_page=1, error_out=False)
+    games = Game.query.paginate(page=page, per_page=15, error_out=False)
     return render_template("gamelist.html", games=games, title="Список игр")
 
 
