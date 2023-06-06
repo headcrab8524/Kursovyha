@@ -59,11 +59,11 @@ class Mod(db.Model):
     Language = db.Column(db.String)
     DateCreation = db.Column(db.Date)
     GameId = db.Column(db.Integer, db.ForeignKey('game.id'))
-    game = db.relationship('Game', backref=db.backref('Mod', lazy='dynamic'))
+    game = db.relationship('Game', backref=db.backref('mods', lazy='dynamic'))
     AuthorId = db.Column(db.Integer, db.ForeignKey('user.id'))
     author = db.relationship('User', backref=db.backref('Mods', lazy='dynamic'))
     GameTagId = db.Column(db.Integer, db.ForeignKey('game_tags.id'))
-    gametag = db.relationship('GameTags', backref=db.backref('Mod', lazy='dynamic'))
+    gametag = db.relationship('GameTags', backref=db.backref('mods', lazy='dynamic'))
 
     def __repr__(self):
         return '<Mod {}>'.format(self.name)
@@ -102,7 +102,7 @@ class ModVideo(db.Model):
 class ModViews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
-    mod = db.relationship('Mod', backref=db.backref('Mod', lazy='dynamic'))
+    mod = db.relationship('Mod', backref=db.backref('views', lazy='dynamic'))
     AuthorId = db.Column(db.Integer, db.ForeignKey('user.id'))
     author = db.relationship('User', backref=db.backref('User', lazy='dynamic'))
     def __repr__(self):

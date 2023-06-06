@@ -34,8 +34,9 @@
                     <li><a href="{{ url_for('faq') }}" class="nav-link text-white px-2 ms-5 mb-2 mb-lg-0">FAQ</a></li>
                 </ul>
 
-                <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" class="form-control form-control-dark" placeholder="Поиск" aria-label="Search">
+                <form method="get" action="{{ url_for('mods') }}" class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" name="search" class="form-control form-control-dark" placeholder="Поиск"
+                        aria-label="Search" autocomplete="off" value="{{ request.args.get('search') or '' }}">
                 </form>
 
                 {% if current_user.is_authenticated %}

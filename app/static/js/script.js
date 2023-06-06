@@ -5,9 +5,6 @@ $(document).ready(function () {
     const url = $(this).attr("action");
     const type = $(this).attr("method");
 
-    console.log("url:" + url);
-    console.log("type:" + type);
-
     $.ajax({
       url: url,
       type: type,

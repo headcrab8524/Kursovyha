@@ -32,7 +32,7 @@
                 </div>
                 <div class="row bg-dark border border-secondary py-3">
                     <div class="col-6"><b>Группа:</b></div>
-                    {% if current_user.is_authenticated and current_user.IdGroup == 3 %}
+                    {% if current_user.is_authenticated and user != current_user and current_user.IdGroup == 3 %}
                     <select name="user-groups" id="user-groups-select" class="form-select form-select-sm w-25"
                         onchange="location = this.value;">
                         <option value="{{ url_for('addgroup', username=user.username, group_id=0) }}" {{ "selected" if

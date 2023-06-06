@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, jsonify
+from flask import render_template, jsonify, make_response
 from app import app
 from app.forms import LoginForm
 from flask import render_template, flash, redirect
@@ -15,6 +15,8 @@ from datetime import datetime
 from flask import url_for
 from flask_login import login_required
 from flask_paginate import *
+from sqlalchemy import or_, and_, func
+import shlex
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -102,7 +104,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
+@login_required
 @app.route('/makenewmod', methods=['GET', 'POST'])
 def makenewmod():
     form = MakeNewModForm()
@@ -127,8 +129,17 @@ def makenewmod():
 
 @app.route('/gamelist')
 def gamelist():
+    search = request.args.get('search')
+    if search:
+        search_words = [word.lower() for word in search.split()]
+        games = Game.query.filter(and_(
+            *[func.lower(Game.name).contains(word) for word in search_words]
+        ))
+    else:
+        games = Game.query
+    
     page = request.args.get('page', type=int, default=1)
-    games = Game.query.paginate(page=page, per_page=15, error_out=False)
+    games = games.order_by(Game.name).paginate(page=page, per_page=10, error_out=False)
     return render_template("gamelist.html", games=games, title="Список игр")
 
 
@@ -137,20 +148,65 @@ def faq():
     return render_template("faq.html", title="FAQ")
 
 
-@app.route('/games/<game_id>/mods')
-def mods(game_id):
-    game = Game.query.get(game_id)
-    mods = Mod.query.filter_by(GameId=game_id)
-    tags = []
-    for mod in mods:
-        tag = GameTags.query.get(mod.GameTagId)
-        if tag not in tags:
-            tags.append(tag)
-    tags = GameTags.query.all()
-    mods = Mod.query.all()
+@app.route('/mods')
+def mods():
+    kwargs = { 'mods': [] }
 
-    return render_template("modlist.html", game=game, mods=mods, tags=tags)
+    search = request.args.get('search')
+    game_id = request.args.get('game_id', type=int)
 
+    if search:
+        # поиск по запросу
+        search_words = [word.lower() for word in search.split()]
+        mods = Mod.query.filter(and_(
+            *[func.lower(Mod.name).contains(word) for word in search_words]
+        ))
+    elif game_id:
+        # поиск по названию игры
+        game = Game.query.get(game_id)
+        mods = Mod.query.filter_by(GameId=game_id)
+        kwargs.update({ 'game': game })
+    else:
+        mods = Mod.query
+    
+    tags_in_filter = []
+    if mods:
+        tags = GameTags.query.all()
+        tags_count = []
+        for tag in tags:
+            mods_with_tag = [mod for mod in mods if mod.GameTagId == tag.id]
+            if mods_with_tag:
+                tags_count.append((tag, mods.count()))
+
+        kwargs.update({ 'tags_count': tags_count })
+    
+        # фильтрация по тегам
+        if request.cookies.get('tags_filter'):
+            tags_in_filter = request.cookies.get('tags_filter').split()
+        
+        # добавление нового фильтра
+        tag_to_set = request.args.get('set')
+        if tag_to_set and tag_to_set not in tags_in_filter:
+            tags_in_filter.append(tag_to_set)
+        
+        # удаление фильтра
+        tag_to_reset = request.args.get('reset')
+        if tag_to_reset and tag_to_reset in tags_in_filter:
+            tags_in_filter.remove(tag_to_reset)
+
+        # применение фильтров
+        mods = mods.filter(or_(*[Mod.GameTagId == tag_id for tag_id in tags_in_filter]))
+            
+        page = request.args.get('page', type=int, default=1)
+        mods = mods.order_by(Mod.name).paginate(page=page, per_page=15, error_out=False)
+    kwargs.update({'mods': mods})
+    kwargs.update({'tags_filter': tags_in_filter})
+
+    # сохранение тегов, по которым идёт фильтрация, в куки
+    response = make_response(render_template('modlist.html', **kwargs))
+    response.set_cookie('tags_filter', ' '.join(tags_in_filter))
+
+    return response
 
 @app.route('/mod_photo/<mod_id>')
 def mod_photo(mod_id):

@@ -1,41 +1,111 @@
 {% extends "base.html" %}
 
 {% block title %}
+{% if game %}
 Список модов по игре "{{ game.name }}"
+{% elif request.args.get('search') %}
+Результаты поиска по запросу "{{ request.args.get('search') }}"
+{% else %}
+Модификации
+{% endif %}
 {% endblock %}
 
 {% block content %}
 <section class="tags-list">
-    <h3 class="ms-3 ps-5 pt-5">Список модов по игре <b>"{{ game.name }}"</b></h3>
+    <h3 class="ms-3 ps-5 pt-5">
+        {% if game %}
+        Список модов по игре <b>"{{ game.name }}"</b>
+        {% elif request.args.get('search') %}
+        Результаты поиска по запросу <b>"{{ request.args.get('search') }}"</b>
+        {% else %}
+        Модификации
+        {% endif %}
+    </h3>
+    {% if tags_count %}
     <div class="my-5 ms-5 ps-3 d-flex flex-wrap">
-        <div class="btn btn-outline-warning d-flex justify-content-between align-items-center p-0 me-2 mb-2">
-            <div class="mx-3">Сбросить фильтры</div>
-            <div class="text-light border-start border-warning px-3 py-2">✕</div>
-        </div>
-        {% for tag in tags %}
-        <div class="btn btn-outline-success d-flex justify-content-between align-items-center p-0 me-2 mb-2"
-            data-bs-toggle="button">
+        {% for tag, count in tags_count %}
+        {% if tag.id|string in tags_filter %}
+        <div class="btn btn-outline-success text-light d-flex justify-content-between align-items-center p-0 me-2 mb-2 active"
+            data-bs-toggle="button" onclick="window.location = '{{ url_for('mods', reset=tag.id) }}'">
             <div class="mx-3">{{ tag.Name }}</div>
-            <div class="text-light border-start border-success px-3 py-2">0</div>
+            <div class="text-light border-start border-success px-3 py-2">{{ count }}</div>
         </div>
+        {% else %}
+        <div class="btn btn-outline-success text-light d-flex justify-content-between align-items-center p-0 me-2 mb-2"
+            data-bs-toggle="button" onclick="window.location = '{{ url_for('mods', set=tag.id) }}'">
+            <div class="mx-3">{{ tag.Name }}</div>
+            <div class="text-light border-start border-success px-3 py-2">{{ count }}</div>
+        </div>
+        {% endif %}
+
         {% endfor %}
     </div>
+    {% endif %}
 </section>
 
-<section class="mods-list ms-5 ps-3">
+{% if mods.items %}
+<section class="mods-list ms-5 ps-3 pb-5">
     {% for mod in mods %}
-    <article class="card btn btn-outline-secondary px-0 position-relative" onclick="">
+    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative" onclick="">
+        <div class="mod-card-info bg-dark d-flex align-items-center">
+            <img src="/static/img/eye.svg" alt="eye" class="ms-2" style="display: inline-block; height: 1rem;">
+            <span class="ms-1" style="font-size: .9rem;">{{ mod.views.count() }}</span>
+            <img src="/static/img/download.svg" alt="download" class="ms-3"
+                style="display: inline-block; height: 1rem;">
+            <span class="ms-1" style="font-size: .9rem;">{{ mod.downloads.count() }}</span>
+        </div>
         <div class="mod-banner card-img-top"
             style="background-image: url('{{ url_for('mod_photo', mod_id=mod.id) }}');">
         </div>
-        <div class="card-body bg-secondary mb-3">
+        <div class="card-body mb-3">
             <h5 class="mb-0 text-light mb-3" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{
                 mod.name }}</h5>
-            <p class="text-start fs-8">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe rem ducimus nostrum ut harum magni ea consequuntur tempora, earum, voluptatibus natus veritatis aspernatur reiciendis vel iure, quaerat corrupti omnis fuga!
-            Corporis nam quas officiis dolor dicta architecto accusantium dolore, fuga similique reiciendis dolorum ab non. Repudiandae, non quis. Dolorem sapiente eveniet quos dignissimos suscipit saepe beatae corrupti sed id doloremque.</p>
+
+            <p class="text-start fs-8">{{ mod.DescriptionCard }}</p>
         </div>
     </article>
+    <!-- <iframe srcdoc="{{ mod.Description }}"></iframe> -->
+    <object type="text/html">{{ mod.Description }}</object>
+
     {% endfor %}
 </section>
 
+{% if mods.pages > 1 %}
+<nav aria-label="Пагинация" class="mt-3 pb-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {% if not games.has_prev %} disabled {% endif %}">
+            <a class="page-link bg-dark border-secondary"
+                href="{{ url_for('mods', game_id=game.id, page=games.prev_num) }}">
+                <span class="d-none d-md-inline">Предыдущая</span>
+                <span class="d-inline d-md-none">&#60&#60</span>
+            </a>
+        </li>
+        {% for i in mods.iter_pages(
+        left_edge=1, left_current=2, right_current=2, right_edge=1
+        ) %}
+        {% if i %}
+        <li class="page-item {% if i == games.page %} active {% endif %}">
+            <a class="page-link bg-dark border-secondary" href="{{ url_for('mods', game_id=game.id, page=i ) }}">{{ i
+                }}</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link bg-dark border-secondary">...</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <li class="page-item {% if not mods.has_next %} disabled {% endif %}">
+            <a class="page-link bg-dark border-secondary"
+                href="{{ url_for( 'mods', game_id=game.id, page=mods.next_num ) }}">
+                <span class="d-none d-md-inline">Следующая</span>
+                <span class="d-inline d-md-none">&#62&#62</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<p class="ms-5 ps-3 pb-5 mt-5">Ничего не найдено.</p>
+{% endif %}
 {% endblock %}

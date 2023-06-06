@@ -1,27 +1,43 @@
 {% extends "base.html" %}
 
 {% block title %}
+{% if request.args.get('search') %}
+Игры по запросу "{{ request.args.get('search') }}"
+{% else %}
 Список игр
+{% endif %}
 {% endblock %}
 
 {% block content %}
-<h3 class="ps-5 pt-5 ms-3 mb-3">Выберите одну из игр</h3>
+<h3 class="ps-5 pt-5 ms-3 mb-3">
+    {% if request.args.get('search') %}
+    Игры по запросу: <b>"{{ request.args.get('search') }}"</b>
+    {% else %}
+    Список игр
+    {% endif %}
+</h3>
 <div class="container ms-5 px-3 py-3 mb-4">
     <div class="row">
         <div class="col-8 col-md-4">
             <h6>Фильтр по названию:</h6>
-            <input type="text" class="form-control" placeholder="Введите название..." autocomplete="off">
+            <form action="{{ url_for('gamelist') }}" method="get">
+                <input type="search" name="search" class="form-control form-control-dark"
+                    placeholder="Введите название..." autocomplete="off" value="{{ request.args.get('search') or '' }}">
+            </form>
         </div>
     </div>
 </div>
-<section class="game-list d-flex justify-content-center mb-4">
+
+{% if games.items %}
+<section class="game-list d-flex justify-content-center flex-wrap pb-4">
     {% for game in games.items %}
-    <div class="card btn btn-outline-secondary" onclick="location = '{{ url_for('mods', game_id=game.id) }}';">
+    <div class="card btn btn-outline-secondary me-2 mb-2"
+        onclick="location = '{{ url_for('mods', game_id=game.id) }}';">
         <div class="game-list-card-img card-img-top"
             style="background-image: url('{{ url_for('game_photo', id=game.id) }}');">
         </div>
         <div class="card-body d-flex align-items-center justify-content-center">
-            <p class="mb-0 text-light" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{
+            <p class="mb-0 text-light" title="{{ game.name }}" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{
                 game.name }}</p>
         </div>
     </div>
@@ -29,7 +45,7 @@
 </section>
 
 {% if games.pages > 1 %}
-<nav aria-label="Пагинация" class="mt-3 mb-4">
+<nav aria-label="Пагинация" class="mt-3 pb-4">
     <ul class="pagination justify-content-center">
         <li class="page-item {% if not games.has_prev %} disabled {% endif %}">
             <a class="page-link bg-dark border-secondary" href="{{ url_for('gamelist' , page=games.prev_num) }}">
@@ -58,6 +74,10 @@
         </li>
     </ul>
 </nav>
+{% endif %}
+
+{% else %}
+<p class="ms-5 ps-3">Ничего не найдено.</p>
 {% endif %}
 
 {% endblock %}
