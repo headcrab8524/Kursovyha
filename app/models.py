@@ -111,9 +111,9 @@ class ModViews(db.Model):
 class ModDownload(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
-    mod = db.relationship('Mod', backref=db.backref('Mod', lazy='dynamic'))
+    mod = db.relationship('Mod', backref=db.backref('downloads', lazy='dynamic'))
     AuthorId = db.Column(db.Integer, db.ForeignKey('user.id'))
-    author = db.relationship('User', backref=db.backref('User', lazy='dynamic'))
+    author = db.relationship('User', backref=db.backref('downloads', lazy='dynamic'))
     def __repr__(self):
         return '<ModDownload {}>'.format(self.name)
 
