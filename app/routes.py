@@ -174,24 +174,25 @@ def faq():
     return render_template("faq.html", title="FAQ")
 
 
-@app.route('/mods')
-def mods():
+@app.route('/mods/')
+@app.route('/mods/<game_id>')
+def mods(game_id=None, search=None):
     kwargs = { 'mods': [] }
 
     search = request.args.get('search')
-    game_id = request.args.get('game_id', type=int)
+    # game_id = request.args.get('game_id', type=int)
 
-    if search:
+    if game_id:
+        # поиск по названию игры
+        game = Game.query.get(game_id)
+        mods = Mod.query.filter_by(GameId=game_id)
+        kwargs.update({ 'game': game })
+    elif search:
         # поиск по запросу
         search_words = [word.lower() for word in search.split()]
         mods = Mod.query.filter(and_(
             *[func.lower(Mod.name).contains(word) for word in search_words]
         ))
-    elif game_id:
-        # поиск по названию игры
-        game = Game.query.get(game_id)
-        mods = Mod.query.filter_by(GameId=game_id)
-        kwargs.update({ 'game': game })
     else:
         mods = Mod.query
     

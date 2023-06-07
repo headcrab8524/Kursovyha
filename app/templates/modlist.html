@@ -25,7 +25,7 @@
     <div class="my-5 ms-5 ps-3 d-flex flex-wrap">
         {% if tags_filter %}
         <div class="btn btn-outline-warning d-flex justify-content-between align-items-center p-0 me-2 mb-2"
-            onclick="window.location = '{{ url_for('mods', reset='all') }}'">
+            onclick="window.location = '{{ url_for('mods', game_id=game.id if game, search=request.args.get('search') if request.args.get('search'), reset='all') }}'">
             <div class="mx-3">Сбросить фильтры</div>
             <div class="text-light border-start border-warning px-3 py-2">✕</div>
         </div>
@@ -33,13 +33,13 @@
         {% for tag, count in tags_count %}
         {% if tag.id|string in tags_filter %}
         <div class="btn btn-outline-success text-light d-flex justify-content-between align-items-center p-0 me-2 mb-2 active"
-            data-bs-toggle="button" onclick="window.location = '{{ url_for('mods', reset=tag.id) }}'">
+            data-bs-toggle="button" onclick="window.location = '{{ url_for('mods', game_id=game.id if game, search=request.args.get('search') if request.args.get('search'), reset=tag.id) }}'">
             <div class="mx-3">{{ tag.Name }}</div>
             <div class="text-light border-start border-success px-3 py-2">{{ count }}</div>
         </div>
         {% else %}
         <div class="btn btn-outline-success text-light d-flex justify-content-between align-items-center p-0 me-2 mb-2"
-            data-bs-toggle="button" onclick="window.location = '{{ url_for('mods', set=tag.id) }}'">
+            data-bs-toggle="button" onclick="window.location = '{{ url_for('mods', game_id=game.id if game, search=request.args.get('search') if request.args.get('search'), set=tag.id) }}'">
             <div class="mx-3">{{ tag.Name }}</div>
             <div class="text-light border-start border-success px-3 py-2">{{ count }}</div>
         </div>
@@ -53,7 +53,7 @@
 {% if mods.items %}
 <section class="mods-list ms-5 ps-3 pb-5 d-flex flex-wrap justify-content-start">
     {% for mod in mods %}
-    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative me-2 mb-2 overflow-hidden pb-1"
+    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative me-2 mb-2"
         onclick="window.location='{{url_for('mod', mod_id=mod.id)}}'">
         <div class="mod-card-info bg-dark d-flex align-items-center">
             <img src="/static/img/eye.svg" alt="eye" class="ms-2" style="display: inline-block; height: 1rem;">
@@ -81,7 +81,7 @@
     <ul class="pagination justify-content-center">
         <li class="page-item {% if not mods.has_prev %} disabled {% endif %}">
             <a class="page-link bg-dark border-secondary"
-                href="{{ url_for('mods', game_id=game.id if game, page=mods.prev_num) }}">
+                href="{{ url_for('mods', game_id=game.id if game, search=request.args.get('search') if request.args.get('search'), page=mods.prev_num) }}">
                 <span class="d-none d-md-inline">Предыдущая</span>
                 <span class="d-inline d-md-none">&#60&#60</span>
             </a>
@@ -92,7 +92,7 @@
         {% if i %}
         <li class="page-item {% if i == mods.page %} active {% endif %}">
             <a class="page-link bg-dark border-secondary"
-                href="{{ url_for('mods', game_id=game.id if game, page=i ) }}">{{ i
+                href="{{ url_for('mods', game_id=game.id if game, search=request.args.get('search') if request.args.get('search'), page=i ) }}">{{ i
                 }}</a>
         </li>
         {% else %}
@@ -103,7 +103,7 @@
         {% endfor %}
         <li class="page-item {% if not mods.has_next %} disabled {% endif %}">
             <a class="page-link bg-dark border-secondary"
-                href="{{ url_for( 'mods', game_id=game.id if game, page=mods.next_num ) }}">
+                href="{{ url_for( 'mods', game_id=game.id if game, search=request.args.get('search') if request.args.get('search'), page=mods.next_num ) }}">
                 <span class="d-none d-md-inline">Следующая</span>
                 <span class="d-inline d-md-none">&#62&#62</span>
             </a>
