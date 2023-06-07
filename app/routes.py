@@ -110,7 +110,8 @@ def login():
 @app.route('/index')
 def index():
     login_form = LoginForm()
-    return render_template("index.html", login_form=login_form)
+    mods_count = Mod.query.count()
+    return render_template("index.html", login_form=login_form, mods_count=mods_count)
 
 
 @app.route('/logout')
@@ -241,6 +242,7 @@ def mods(game_id=None, search=None):
     response.set_cookie('tags_filter', ' '.join(tags_in_filter))
 
     return response
+
 
 @app.route('/mod_photo/<mod_id>')
 def mod_photo(mod_id):
