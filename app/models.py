@@ -74,7 +74,7 @@ class ModLink(db.Model):
     Link = db.Column(db.String)
     LinkName = db.Column(db.String)
     Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
-    modid = db.relationship('Mod', backref=db.backref('ModLink', lazy='dynamic'))
+    mod = db.relationship('Mod', backref=db.backref('ModLink', lazy='dynamic'))
 
     def __repr__(self):
         return '<ModLink {}>'.format(self.name)

@@ -40,7 +40,7 @@
             <div class="mb-3 d-flex align-items-center">
                 <img src="/static/img/download.svg" alt="download" class="me-2"
                     style="display: inline-block; height: 2rem;">
-                <a href="{{link.Link}}" class="link-light" style="word-break: break-all;">{{ link.LinkName }}</a>
+                <a href="{{ url_for('mod_link', link_id=link.id) }}" class="link-light" style="word-break: break-all;">{{ link.LinkName }}</a>
             </div>
             {% endfor %}
         </div>

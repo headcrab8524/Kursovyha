@@ -251,5 +251,30 @@ def mod(mod_id):
     if current_user.is_anonymous:
         login_form = LoginForm()
         return render_template("mod.html", mod=mod, login_form=login_form)
+    else:
+        views = ModViews.query.filter(
+            and_(ModViews.Modid == mod.id, ModViews.AuthorId == current_user.id)
+        )
+        if not views.count():
+            new_view = ModViews(Modid=mod.id, AuthorId=current_user.id)
+            db.session.add(new_view)
+            db.session.commit()
     
     return render_template("mod.html", mod=mod)
+
+@app.route('/mod_link/<link_id>')
+def mod_link(link_id):
+    link = ModLink.query.get(link_id)
+    if link:
+        if current_user.is_authenticated:
+            mod = link.mod
+            downloads = ModDownload.query.filter(
+                and_(ModDownload.Modid == mod.id, ModDownload.AuthorId == current_user.id)
+            )
+            if not downloads.count():
+                new_download = ModDownload(Modid=mod.id, AuthorId=current_user.id)
+                db.session.add(new_download)
+                db.session.commit()
+        return redirect(link.Link)
+    else:
+        return redirect(url_for('index')), 404
