@@ -130,7 +130,7 @@ def makenewmod():
         if form.tubelink.data:
             mod_video=ModVideo(Link=form.tubelink.data, Modid=mod.id)
             db.session.add(mod_video)
-        mod_link = ModLink(Link=form.mainlink.data, Modid=mod.id, LinkName=form.mainlink.data)
+        mod_link = ModLink(Link=form.mainlink.data, Modid=mod.id, LinkName=form.maintext.data)
         db.session.add(mod_link)
         if form.sublink.data:
             mod_link = ModLink(Link=form.sublink.data, Modid=mod.id, LinkName=form.subtext.data)
