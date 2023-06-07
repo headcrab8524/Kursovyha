@@ -123,7 +123,7 @@ class ModComment(db.Model):
     Modid = db.Column(db.Integer, db.ForeignKey('mod.id'), default=0)
     mod = db.relationship('Mod', backref=db.backref('ModComment', lazy='dynamic'))
     MessageAuthorId = db.Column(db.Integer, db.ForeignKey('user.id'), default=0)
-    DateSend = db.Column(db.DateTime)
+    DateSend = db.Column(db.DateTime, default=datetime.utcnow())
     messageauthor = db.relationship('User', backref=db.backref('ModComment.', lazy='dynamic'))
 
     def __repr__(self):

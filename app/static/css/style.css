@@ -81,6 +81,20 @@ main {
   background-position: center center;
 }
 
+.profile-photo-comment {
+  width: 100%;
+  padding-bottom: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+
+.profile-photo-comment-2 {
+  width: 4rem;
+  padding-bottom: 4rem;
+  background-size: cover;
+  background-position: center center; 
+}
+
 .profile-photo-on-page {
   width: 15rem;
   padding-bottom: 15rem;

@@ -72,3 +72,8 @@ class MakeNewModForm(FlaskForm):
         super(MakeNewModForm, self).__init__(*args, **kwargs)
         self.gamename.choices.extend([(tt.id, tt.name) for tt in Game.query.all()])
         self.tags.choices.extend([(tt.id, tt.Name) for tt in GameTags.query.all()])
+
+class CommentForm(FlaskForm):
+    user_id = HiddenField('user id')
+    comment = TextAreaField('Комментарий')
+    submit = SubmitField('Опубликовать')

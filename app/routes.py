@@ -251,16 +251,18 @@ def mod(mod_id):
     if current_user.is_anonymous:
         login_form = LoginForm()
         return render_template("mod.html", mod=mod, login_form=login_form)
-    else:
-        views = ModViews.query.filter(
-            and_(ModViews.Modid == mod.id, ModViews.AuthorId == current_user.id)
-        )
-        if not views.count():
-            new_view = ModViews(Modid=mod.id, AuthorId=current_user.id)
-            db.session.add(new_view)
-            db.session.commit()
+    views = ModViews.query.filter(
+        and_(ModViews.Modid == mod.id, ModViews.AuthorId == current_user.id)
+    )
+    if not views.count():
+        new_view = ModViews(Modid=mod.id, AuthorId=current_user.id)
+        db.session.add(new_view)
+        db.session.commit()
+
+    comment_form = CommentForm()
     
-    return render_template("mod.html", mod=mod)
+    return render_template("mod.html", mod=mod, comment_form=comment_form)
+
 
 @app.route('/mod_link/<link_id>')
 def mod_link(link_id):
@@ -278,3 +280,16 @@ def mod_link(link_id):
         return redirect(link.Link)
     else:
         return redirect(url_for('index')), 404
+
+
+@app.route('/comment/<mod_id>', methods=['post'])
+@login_required
+def comment(mod_id):
+    form = CommentForm()
+    if form.validate_on_submit() and form.comment.data:
+        comment = ModComment(Message=form.comment.data, Modid=mod_id,
+                             MessageAuthorId=current_user.id,
+                             )
+        db.session.add(comment)
+        db.session.commit()
+    return redirect(url_for('mod', mod_id=mod_id))
