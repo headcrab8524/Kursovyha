@@ -127,6 +127,7 @@ def makenewmod():
                   Picture=form.image.data.read(), DescriptionCard=form.desctex.data, Language=form.language.data,
                   GameTagId=form.tags.data, DateCreation=form.adddate.data, AuthorId=current_user.id)
         db.session.add(mod)
+        db.session.commit()
         if form.tubelink.data:
             mod_video=ModVideo(Link=form.tubelink.data, Modid=mod.id)
             db.session.add(mod_video)
@@ -201,7 +202,7 @@ def mods():
         for tag in tags:
             mods_with_tag = [mod for mod in mods if mod.GameTagId == tag.id]
             if mods_with_tag:
-                tags_count.append((tag, mods.count()))
+                tags_count.append((tag, len(mods_with_tag)))
 
         kwargs.update({ 'tags_count': tags_count })
     

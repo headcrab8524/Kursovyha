@@ -50,9 +50,9 @@
 </section>
 
 {% if mods.items %}
-<section class="mods-list ms-5 ps-3 pb-5">
+<section class="mods-list ms-5 ps-3 pb-5 d-flex flex-wrap justify-content-start">
     {% for mod in mods %}
-    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative"
+    <article class="card btn btn-outline-secondary pt-0 px-0 position-relative me-2 mb-2"
         onclick="window.location='{{url_for('mod', mod_id=mod.id)}}'">
         <div class="mod-card-info bg-dark d-flex align-items-center">
             <img src="/static/img/eye.svg" alt="eye" class="ms-2" style="display: inline-block; height: 1rem;">
@@ -71,8 +71,6 @@
             <p class="text-start fs-8">{{ mod.DescriptionCard }}</p>
         </div>
     </article>
-    <!-- <iframe srcdoc="{{ mod.Description }}"></iframe> -->
-    <object type="text/html">{{ mod.Description }}</object>
 
     {% endfor %}
 </section>

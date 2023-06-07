@@ -29,7 +29,7 @@
 </div>
 
 {% if games.items %}
-<section class="game-list d-flex justify-content-center flex-wrap pb-4">
+<section class="game-list d-flex justify-content-start flex-wrap pb-4 ms-5 ps-3">
     {% for game in games.items %}
     <div class="card btn btn-outline-secondary me-2 mb-2"
         onclick="location = '{{ url_for('mods', game_id=game.id) }}';">

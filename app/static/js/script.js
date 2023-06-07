@@ -22,13 +22,13 @@ $(document).ready(function () {
         let isFocused = false;
         for (let key in errors) {
           // фокус на первый инпут с ошибкой (если есть)
-          if (!isFocused) {
-            isFocused = true;
-            const input = $(this).find("#" + key);
-            if (input) {
-              input.focus();
-            }
-          }
+          // if (!isFocused) {
+          //   isFocused = true;
+          //   const input = $(this).find("#" + key);
+          //   if (input) {
+          //     input.focus();
+          //   }
+          // }
 
           // вывод ошибок
           const errorMessages = errors[key];
