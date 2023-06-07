@@ -192,7 +192,7 @@ main {
   left: 0;
   display: block;
   background-color: #212529;
-  height: .75rem;
+  height: 0.75rem;
   width: 100%;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -277,4 +277,20 @@ main {
     linear-gradient(rgba(6, 243, 17, 0.4), rgba(0, 255, 42, 0.836));
   box-shadow: inset rgba(162, 95, 42, 0.4) 0 0 0 1px,
     inset rgba(255, 255, 255, 0.9) 0 0 1px 3px;
+}
+
+.thumb-wrap {
+  position: relative;
+  padding-bottom: 56.25%; /* задаёт высоту контейнера для 16:9 (если 4:3 — поставьте 75%) */
+  height: 0;
+  overflow: hidden;
+}
+.thumb-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-width: 0;
+  outline-width: 0;
 }
