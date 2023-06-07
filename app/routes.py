@@ -146,7 +146,7 @@ def makenewmod():
 
 @app.route('/gamelist')
 def gamelist():
-    search = request.args.get('search')
+    search = request.args.get('searchGame')
     if search:
         search_words = [word.lower() for word in search.split()]
         games = Game.query.filter(and_(

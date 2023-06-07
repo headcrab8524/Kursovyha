@@ -21,8 +21,8 @@
         <div class="col-8 col-md-4">
             <h6>Фильтр по названию:</h6>
             <form action="{{ url_for('gamelist') }}" method="get">
-                <input type="search" name="search" class="form-control form-control-dark"
-                    placeholder="Введите название..." autocomplete="off" value="{{ request.args.get('search') or '' }}">
+                <input type="search" name="searchGame" class="form-control form-control-dark"
+                    placeholder="Введите название..." autocomplete="off" value="{{ request.args.get('searchGame') or '' }}">
             </form>
         </div>
     </div>
