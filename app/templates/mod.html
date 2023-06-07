@@ -11,9 +11,9 @@
         <img src="{{url_for('mod_photo', mod_id=mod.id)}}" alt="mod_photo" class="mod-page-banner mb-5"
             style="display: block;">
     </div>
-    <ul class="nav nav-tabs bg-dark rounded-top" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link link-light active py-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+    <ul class="nav nav-tabs" id="myTab" role="tablist" style="background: rgb(30, 30, 30);;">
+        <li class="nav-item rounded-0" role="presentation">
+            <button class="nav-link link-light border-0 active py-3" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
                 type="button" role="tab" aria-controls="home" aria-selected="true">Описание</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -28,6 +28,10 @@
             <button class="nav-link link-light py-3" id="contact-tab" data-bs-toggle="tab" data-bs-target="#video"
                 type="button" role="tab" aria-controls="video" aria-selected="false">Комментарии</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link link-light py-3" id="about-tab" data-bs-toggle="tab" data-bs-target="#about"
+                type="button" role="tab" aria-controls="home" aria-selected="true">О моде</button>
+        </li>
     </ul>
     <div class="tab-content p-4 bg-dark rounded" id="myTabContent">
 
@@ -38,6 +42,7 @@
         </div>
 
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            {% if current_user.is_authenticated %}
             {% if mod.ModLink.count() %}
             {% for link in mod.ModLink %}
             <a href="{{ url_for('mod_link', link_id=link.id) }}" class="mb-3 d-flex align-items-center text-decoration-none">
@@ -48,6 +53,9 @@
             {% endfor %}
             {% else %}
             <p>Ссылки на скачивание отсутствуют.</p>
+            {% endif %}
+            {% else %}
+            <p>Чтобы скачать модификацию, необходимо авторизоваться.</p>
             {% endif %}
         </div>
 
@@ -97,7 +105,7 @@
                     </div>
                     <div class="d-flex flex-column">
                         <div class="fs-4">{{ comment.messageauthor.username }}</div>
-                        <div class="">{{ comment.DateSend }}</div>
+                        <div class="">{{ comment.DateSend.strftime('%d.%m.%Y %H:%M:%S') }}</div>
                     </div>
                 </a>
 
@@ -105,8 +113,14 @@
             </article>
             {% endfor %}
             {% else %}
-            <p class="ms-2">Комментариев пока нет.</p>
+            <p>Комментариев пока нет.</p>
             {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+            <p><b>Автор:</b> <a href="{{url_for('user', username=mod.author.username)}}" class="link-light">{{ mod.author.username }}</a></p>
+            <p><b>Дата создания:</b> {{mod.DateCreation.strftime('%d.%m.%Y')}}</p>
+            <p><b>Язык:</b> {{mod.Language}}</p>
         </div>
     </div>
 </section>
