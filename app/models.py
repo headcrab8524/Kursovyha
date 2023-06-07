@@ -133,8 +133,8 @@ class ModComment(db.Model):
 class GameTags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String)
-    idGame = db.Column(db.Integer, db.ForeignKey('game.id'))
-    game = db.relationship('Game', backref=db.backref('GameTags', lazy='dynamic'))
+    # idGame = db.Column(db.Integer, db.ForeignKey('game.id'))
+    # game = db.relationship('Game', backref=db.backref('GameTags', lazy='dynamic'))
 
     def __repr__(self):
         return '<GameTags {}>'.format(self.Name)

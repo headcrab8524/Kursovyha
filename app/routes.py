@@ -199,10 +199,9 @@ def mods():
         tags = GameTags.query.all()
         tags_count = []
         for tag in tags:
-            tags_count.append((tag, 2))
-            # mods_with_tag = [mod for mod in mods if mod.GameTagId == tag.id]
-            # if mods_with_tag:
-            #     tags_count.append((tag, mods.count()))
+            mods_with_tag = [mod for mod in mods if mod.GameTagId == tag.id]
+            if mods_with_tag:
+                tags_count.append((tag, mods.count()))
 
         kwargs.update({ 'tags_count': tags_count })
     

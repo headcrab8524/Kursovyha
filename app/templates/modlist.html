@@ -23,10 +23,12 @@
     </h3>
     {% if tags_count %}
     <div class="my-5 ms-5 ps-3 d-flex flex-wrap">
+        {% if tags_filter %}
         <div class="btn btn-outline-warning d-flex justify-content-between align-items-center p-0 me-2 mb-2" onclick="window.location = '{{ url_for('mods', reset='all') }}'">
             <div class="mx-3">Сбросить фильтры</div>
             <div class="text-light border-start border-warning px-3 py-2">✕</div>
         </div>
+        {% endif %}
         {% for tag, count in tags_count %}
         {% if tag.id|string in tags_filter %}
         <div class="btn btn-outline-success text-light d-flex justify-content-between align-items-center p-0 me-2 mb-2 active"
