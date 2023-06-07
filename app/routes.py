@@ -199,9 +199,10 @@ def mods():
         tags = GameTags.query.all()
         tags_count = []
         for tag in tags:
-            mods_with_tag = [mod for mod in mods if mod.GameTagId == tag.id]
-            if mods_with_tag:
-                tags_count.append((tag, mods.count()))
+            tags_count.append((tag, 2))
+            # mods_with_tag = [mod for mod in mods if mod.GameTagId == tag.id]
+            # if mods_with_tag:
+            #     tags_count.append((tag, mods.count()))
 
         kwargs.update({ 'tags_count': tags_count })
     
@@ -216,8 +217,11 @@ def mods():
         
         # удаление фильтра
         tag_to_reset = request.args.get('reset')
-        if tag_to_reset and tag_to_reset in tags_in_filter:
-            tags_in_filter.remove(tag_to_reset)
+        if tag_to_reset:
+            if tag_to_reset == 'all':
+                tags_in_filter = []
+            elif tag_to_reset in tags_in_filter:
+                tags_in_filter.remove(tag_to_reset)
 
         # применение фильтров
         mods = mods.filter(or_(*[Mod.GameTagId == tag_id for tag_id in tags_in_filter]))
@@ -227,12 +231,11 @@ def mods():
     kwargs.update({'mods': mods})
     kwargs.update({'tags_filter': tags_in_filter})
 
-    # сохранение тегов, по которым идёт фильтрация, в куки
-
     if current_user.is_anonymous:
         login_form = LoginForm()
         kwargs.update({'login_form': login_form})
 
+    # сохранение тегов, по которым идёт фильтрация, в куки
     response = make_response(render_template('modlist.html', **kwargs))
     response.set_cookie('tags_filter', ' '.join(tags_in_filter))
 
