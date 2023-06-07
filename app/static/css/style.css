@@ -225,7 +225,7 @@ main {
   left: 0;
   display: block;
   background-color: #212529;
-  height: .8rem;
+  height: .5rem;
   width: 100%;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -233,6 +233,11 @@ main {
 
 .mods-list .card:hover::after {
   background-color: #6c757d;
+  background-color: #198754;
+}
+
+.mods-list .card:hover {
+  border-color: #198754;
 }
 
 .mod-page-banner {
