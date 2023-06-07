@@ -78,9 +78,9 @@
 {% if mods.pages > 1 %}
 <nav aria-label="Пагинация" class="mt-3 pb-4">
     <ul class="pagination justify-content-center">
-        <li class="page-item {% if not games.has_prev %} disabled {% endif %}">
+        <li class="page-item {% if not mods.has_prev %} disabled {% endif %}">
             <a class="page-link bg-dark border-secondary"
-                href="{{ url_for('mods', game_id=game.id, page=games.prev_num) }}">
+                href="{{ url_for('mods', game_id=game.id if game, page=mods.prev_num) }}">
                 <span class="d-none d-md-inline">Предыдущая</span>
                 <span class="d-inline d-md-none">&#60&#60</span>
             </a>
@@ -89,8 +89,8 @@
         left_edge=1, left_current=2, right_current=2, right_edge=1
         ) %}
         {% if i %}
-        <li class="page-item {% if i == games.page %} active {% endif %}">
-            <a class="page-link bg-dark border-secondary" href="{{ url_for('mods', game_id=game.id, page=i ) }}">{{ i
+        <li class="page-item {% if i == mods.page %} active {% endif %}">
+            <a class="page-link bg-dark border-secondary" href="{{ url_for('mods', game_id=game.id if game, page=i ) }}">{{ i
                 }}</a>
         </li>
         {% else %}
@@ -101,7 +101,7 @@
         {% endfor %}
         <li class="page-item {% if not mods.has_next %} disabled {% endif %}">
             <a class="page-link bg-dark border-secondary"
-                href="{{ url_for( 'mods', game_id=game.id, page=mods.next_num ) }}">
+                href="{{ url_for( 'mods', game_id=game.id if game, page=mods.next_num ) }}">
                 <span class="d-none d-md-inline">Следующая</span>
                 <span class="d-inline d-md-none">&#62&#62</span>
             </a>

@@ -87,6 +87,7 @@
             <p>Войдите в аккаунт, чтобы оставлять комментарии.</p>
             {% endif %}
 
+            {% if mod.ModComment.count() %}
             {% for comment in mod.ModComment %}
             <article class="border rounded p-2 mt-3 bg-dark">
                 <a href="{{ url_for('user', username=comment.messageauthor.username) }}"
@@ -103,6 +104,9 @@
                 <p class="ps-2">{{ comment.Message }}</p>
             </article>
             {% endfor %}
+            {% else %}
+            <p class="ms-2">Комментариев пока нет.</p>
+            {% endif %}
         </div>
     </div>
 </section>
